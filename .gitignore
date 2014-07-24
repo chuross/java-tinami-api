@@ -1,0 +1,13 @@
+.gradle
+
+
+local.properties
+gradle.properties
+
+.classpath
+.project
+
+.idea/
+*.iml
+
+.DS_Store
