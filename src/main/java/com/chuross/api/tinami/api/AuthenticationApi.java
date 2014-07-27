@@ -31,6 +31,7 @@ class AuthenticationApi extends PostRequestApi<AuthenticationResult> {
 
     @Override
     protected void setParameters(List<NameValuePair> nameValuePairs) {
+        nameValuePairs.add(new BasicNameValuePair("api_key", context.getApiKey()));
         nameValuePairs.add(new BasicNameValuePair("email", email));
         nameValuePairs.add(new BasicNameValuePair("password", password));
     }
@@ -41,9 +42,7 @@ class AuthenticationApi extends PostRequestApi<AuthenticationResult> {
 
     @Override
     protected AuthenticationResult convert(HttpResponse response) throws Exception {
-        if(response == null) {
-            return null;
-        }
-        return new AuthenticationResult(response.getStatus(), new Persister().read(com.chuross.api.tinami.element.Authentication.class, response.getContentsAsString("UTF-8")));
+        Authentication authentication = new Persister().read(Authentication.class, response.getContentsAsString("UTF-8"));
+        return new AuthenticationResult(response.getStatus(), authentication);
     }
 }

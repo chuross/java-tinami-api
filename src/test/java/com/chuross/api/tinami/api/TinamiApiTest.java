@@ -5,7 +5,9 @@ import static org.hamcrest.CoreMatchers.*;
 
 import com.chuross.api.tinami.MockContext;
 import com.chuross.api.tinami.element.Authentication;
+import com.chuross.api.tinami.element.UserInfo;
 import com.chuross.api.tinami.result.AuthenticationResult;
+import com.chuross.api.tinami.result.UserInfoResult;
 import com.chuross.testcase.http.HttpRequestTestCase;
 import com.chuross.testcase.http.RequestPattern;
 import com.chuross.testcase.http.Response;
@@ -34,18 +36,18 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
     @Test
     public void 認証ができる() throws Exception {
-        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/authentication/success.xml"));
-        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
-
         List<NameValuePair> parameters = Lists.newArrayList();
+        parameters.add(new BasicNameValuePair("api_key", null));
         parameters.add(new BasicNameValuePair("email", "hoge"));
         parameters.add(new BasicNameValuePair("password", "fuga"));
         RequestPattern pattern = new RequestPattern("/auth", parameters, null);
 
+        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/authentication/success.xml"));
+        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
+
         addResponse(pattern, response);
 
         AuthenticationResult result = api.authenticate(MoreExecutors.sameThreadExecutor(), "hoge", "fuga").get();
-        assertThat(result, notNullValue());
         assertThat(result.isSuccess(), is(true));
         assertThat(result.getStatus(), is(200));
 
@@ -57,18 +59,18 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
     @Test
     public void 認証エラーを取得できる() throws Exception {
-        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/authentication/fail.xml"));
-        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
-
         List<NameValuePair> parameters = Lists.newArrayList();
+        parameters.add(new BasicNameValuePair("api_key", null));
         parameters.add(new BasicNameValuePair("email", "hoge"));
         parameters.add(new BasicNameValuePair("password", "fuga"));
         RequestPattern pattern = new RequestPattern("/auth", parameters, null);
 
+        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/authentication/fail.xml"));
+        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
+
         addResponse(pattern, response);
 
         AuthenticationResult result = api.authenticate(MoreExecutors.sameThreadExecutor(), "hoge", "fuga").get();
-        assertThat(result, notNullValue());
         assertThat(result.isSuccess(), is(false));
         assertThat(result.getStatus(), is(200));
         assertThat(result.isLoginFailed(), is(true));
@@ -76,6 +78,52 @@ public class TinamiApiTest extends HttpRequestTestCase {
         Authentication authentication = result.getResult();
         assertThat(authentication.getStatus(), is("fail"));
         assertThat(authentication.getError().getMessage(), is("Login failed "));
+    }
+
+    @Test
+    public void ユーザー情報が取得できる() throws Exception {
+        List<NameValuePair> parameters = Lists.newArrayList();
+        parameters.add(new BasicNameValuePair("api_key", null));
+        parameters.add(new BasicNameValuePair("auth_key", null));
+        RequestPattern pattern = new RequestPattern("/login/info", parameters, null);
+
+        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/user_info/success_user.xml"));
+        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
+
+        addResponse(pattern, response);
+
+        UserInfoResult result = api.userInfo(MoreExecutors.sameThreadExecutor(), null).get();
+        assertThat(result.isSuccess(), is(true));
+        assertThat(result.getStatus(), is(200));
+
+        UserInfo info = result.getResult();
+        assertThat(info.getStatus(), is("ok"));
+        assertThat(info.getError(), nullValue());
+        assertThat(info.getUser().getId(), is("12345"));
+        assertThat(info.getCreator(), nullValue());
+    }
+
+    @Test
+    public void クリエイター情報が取得できる() throws Exception {
+        List<NameValuePair> parameters = Lists.newArrayList();
+        parameters.add(new BasicNameValuePair("api_key", null));
+        parameters.add(new BasicNameValuePair("auth_key", null));
+        RequestPattern pattern = new RequestPattern("/login/info", parameters, null);
+
+        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/user_info/success_creator.xml"));
+        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
+
+        addResponse(pattern, response);
+
+        UserInfoResult result = api.userInfo(MoreExecutors.sameThreadExecutor(), null).get();
+        assertThat(result.isSuccess(), is(true));
+        assertThat(result.getStatus(), is(200));
+
+        UserInfo info = result.getResult();
+        assertThat(info.getStatus(), is("ok"));
+        assertThat(info.getError(), nullValue());
+        assertThat(info.getUser().getId(), is("12345"));
+        assertThat(info.getCreator().getId(), is("6789"));
     }
 
 }

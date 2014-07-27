@@ -5,7 +5,7 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
 @Root(name = "rsp")
-public class Authentication implements RootElement {
+public class UserInfo implements RootElement {
 
     @Attribute(name = "stat")
     private String status;
@@ -13,8 +13,11 @@ public class Authentication implements RootElement {
     @Element(name = "err", required = false)
     private Error error;
 
-    @Element(name = "auth_key", required = false)
-    private String authKey;
+    @Element
+    private User user;
+
+    @Element(required = false)
+    private Creator creator;
 
     @Override
     public String getStatus() {
@@ -26,8 +29,12 @@ public class Authentication implements RootElement {
         return error;
     }
 
-    public String getAuthKey() {
-        return authKey;
+    public User getUser() {
+        return user;
+    }
+
+    public Creator getCreator() {
+        return creator;
     }
 
 }
