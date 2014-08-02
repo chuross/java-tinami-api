@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rsp stat="ok">
+    <contents total="486402" page="1" pages="162134" perpage="3">
+        <content id="123456" type="illust">
+            <title>作品タイトル</title>
+            <view_level>public</view_level>
+            <age_level>1</age_level>
+            <thumbnails>
+                <thumbnail_150x150 url="http://img.tinami.com/1.gif" width="112" height="120"/>
+            </thumbnails>
+        </content>
+        <content id="456789" type="illust">
+            <title>作品タイトル2</title>
+            <view_level>user</view_level>
+            <age_level>2</age_level>
+            <thumbnails>
+                <thumbnail_150x150 url="http://img.tinami.com/2.gif" width="112" height="120"/>
+            </thumbnails>
+        </content>
+        <content id="101112" type="illust">
+            <title>作品タイトル3</title>
+            <view_level>supporter</view_level>
+            <age_level>3</age_level>
+            <thumbnails>
+                <thumbnail_150x150 url="http://img.tinami.com/3.gif" width="112" height="120"/>
+            </thumbnails>
+        </content>
+    </contents>
+</rsp>

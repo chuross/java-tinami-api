@@ -28,8 +28,4 @@ public class Account {
         return authKey;
     }
 
-    public static Account refreshAuthKey(Account account, String authKey) {
-        return new Account(account.getEmail(), account.getPassword(), authKey);
-    }
-
 }

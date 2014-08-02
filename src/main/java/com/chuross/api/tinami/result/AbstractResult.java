@@ -13,7 +13,7 @@ public abstract class AbstractResult<T extends RootElement> extends com.chuross.
 
     @Override
     public boolean isSuccess() {
-        return getStatus() == 200 && getResult().getStatus().equals("ok");
+        return getStatus() == 200 && getResult() != null && getResult().getStatus().equals("ok");
     }
 
     protected boolean errorMessageExists(String target) {

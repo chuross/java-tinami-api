@@ -4,10 +4,8 @@ import com.chuross.api.tinami.Account;
 import com.chuross.api.tinami.ApiContext;
 import com.chuross.api.tinami.Context;
 import com.chuross.api.tinami.OnLoginSessionExpiredListener;
-import com.chuross.api.tinami.result.AbstractAuthenticatedResult;
-import com.chuross.api.tinami.result.AuthenticationResult;
-import com.chuross.api.tinami.result.LogoutResult;
-import com.chuross.api.tinami.result.UserInfoResult;
+import com.chuross.api.tinami.parameter.SearchParameter;
+import com.chuross.api.tinami.result.*;
 import com.chuross.common.library.api.Api;
 import com.chuross.common.library.util.FutureUtils;
 import com.chuross.common.library.util.MethodCallUtils;
@@ -59,6 +57,10 @@ public class TinamiApi {
         });
     }
 
+    public Future<SearchResult> search(Executor executor, SearchParameter searchParameter) {
+        return new SearchApi(context, account.getAuthKey(), searchParameter).execute(executor, config, RETRY_COUNT);
+    }
+
     private <R extends AbstractAuthenticatedResult<?>> Future<R> executeWithAuthentication(Executor executor, final Callable<Api<R>> apiCallable) {
         return FutureUtils.executeOrNull(executor, new Callable<R>() {
             @Override
@@ -91,7 +93,7 @@ public class TinamiApi {
         if(listener != null) {
             listener.onSessionChanged(newAuthKey);
         }
-        account = Account.refreshAuthKey(account, newAuthKey);
+        account = new Account(account.getEmail(), account.getPassword(), newAuthKey);
         return FutureUtils.getOrNull(MethodCallUtils.callOrNull(apiCallable).execute(MoreExecutors.sameThreadExecutor(), config, RETRY_COUNT));
     }
 
