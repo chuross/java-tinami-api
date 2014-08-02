@@ -66,11 +66,20 @@ public class TinamiApi {
         });
     }
 
-    public Future<BookmarkContentResult> bookmarkContents(Executor executor, final int page, final int perpage, final boolean safe) {
-        return executeWithAuthentication(executor, new Callable<Api<BookmarkContentResult>>() {
+    public Future<BookmarkContentsResult> bookmarkContents(Executor executor, final int page, final int perpage, final boolean safe) {
+        return executeWithAuthentication(executor, new Callable<Api<BookmarkContentsResult>>() {
             @Override
-            public Api<BookmarkContentResult> call() throws Exception {
-                return new BookmarkContentApi(context, account.getAuthKey(), page, perpage, safe);
+            public Api<BookmarkContentsResult> call() throws Exception {
+                return new BookmarkContentsApi(context, account.getAuthKey(), page, perpage, safe);
+            }
+        });
+    }
+
+    public Future<BookmarkCreatorsResult> bookmarkCreators(Executor executor, final int page, final int perpage) {
+        return executeWithAuthentication(executor, new Callable<Api<BookmarkCreatorsResult>>() {
+            @Override
+            public Api<BookmarkCreatorsResult> call() throws Exception {
+                return new BookmarkCreatorsApi(context, account.getAuthKey(), page, perpage);
             }
         });
     }

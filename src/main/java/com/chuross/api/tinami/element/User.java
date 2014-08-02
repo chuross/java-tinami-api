@@ -5,9 +5,9 @@ import org.simpleframework.xml.Attribute;
 public class User {
 
     @Attribute(name = "no")
-    private String id;
+    private long id;
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 

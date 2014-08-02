@@ -1,0 +1,16 @@
+<rsp stat="ok">
+    <creators total="2" page="1" pages="1" perpage="20">
+        <creator id="51946">
+            <name>ラムネ</name>
+            <thumbnail>
+                http://img.tinami.com/supporter/profile/68/sp00272568_45b606019e24ab289a8d269140f0186a.png
+            </thumbnail>
+        </creator>
+        <creator id="10">
+            <name>TINAMIの中の人</name>
+            <thumbnail>
+                http://www.tinami.com/supporter/images/profile/sp00000010_dc8dfb2063d236fc1832223c5de23760.gif
+            </thumbnail>
+        </creator>
+    </creators>
+</rsp>

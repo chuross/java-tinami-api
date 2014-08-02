@@ -123,7 +123,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
         UserInfo info = result.getResult();
         assertThat(info.getStatus(), is("ok"));
         assertThat(info.getError(), nullValue());
-        assertThat(info.getUser().getId(), is("12345"));
+        assertThat(info.getUser().getId(), is(12345L));
         assertThat(info.getCreator(), nullValue());
     }
 
@@ -146,8 +146,8 @@ public class TinamiApiTest extends HttpRequestTestCase {
         UserInfo info = result.getResult();
         assertThat(info.getStatus(), is("ok"));
         assertThat(info.getError(), nullValue());
-        assertThat(info.getUser().getId(), is("12345"));
-        assertThat(info.getCreator().getId(), is("6789"));
+        assertThat(info.getUser().getId(), is(12345L));
+        assertThat(info.getCreator().getId(), is(6789L));
     }
 
     @Test
@@ -161,7 +161,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
         parameters.add(new BasicNameValuePair("perpage", "1"));
         RequestPattern pattern = new RequestPattern("/content/search", parameters, null);
 
-        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/contentlist/success_multi_contents.xml"));
+        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/contentlist/success_multi.xml"));
         Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
 
         addResponse(pattern, response);
@@ -210,12 +210,46 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
     @Test
     public void お気に入りクリエイターの作品が取得できる() throws Exception {
-        コンテンツリストを取得できる("/bookmark/content/list", new Callable<Future<BookmarkContentResult>>() {
+        コンテンツリストを取得できる("/bookmark/content/list", new Callable<Future<BookmarkContentsResult>>() {
             @Override
-            public Future<BookmarkContentResult> call() throws Exception {
+            public Future<BookmarkContentsResult> call() throws Exception {
                 return api.bookmarkContents(MoreExecutors.sameThreadExecutor(), 1, 20, false);
             }
         });
+    }
+
+    @Test
+    public void お気に入りクリエイターが取得できる() throws Exception {
+        List<NameValuePair> parameters = Lists.newArrayList();
+        parameters.add(new BasicNameValuePair("api_key", "mock"));
+        parameters.add(new BasicNameValuePair("auth_key", "piyo"));
+        parameters.add(new BasicNameValuePair("page", "1"));
+        parameters.add(new BasicNameValuePair("perpage", "20"));
+        RequestPattern pattern = new RequestPattern("/bookmark/list", parameters, null);
+
+        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/creatorlist/success_multi.xml"));
+        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
+
+        addResponse(pattern, response);
+
+        BookmarkCreatorsResult result = api.bookmarkCreators(MoreExecutors.sameThreadExecutor(), 1, 20).get();
+        assertThat(result.getStatus(), is(200));
+        assertThat(result.isSuccess(), is(true));
+
+        CreatorList list = result.getResult();
+        assertThat(list.getStatus(), is("ok"));
+        assertThat(list.getError(), nullValue());
+
+        List<Creator> creators = list.getCreators();
+        assertThat(creators.size(), is(2));
+
+        assertThat(creators.get(0).getId(), is(51946L));
+        assertThat(creators.get(0).getName(), is("ラムネ"));
+        assertThat(creators.get(0).getThumbnailUrl(), is("http://img.tinami.com/supporter/profile/68/sp00272568_45b606019e24ab289a8d269140f0186a.png"));
+
+        assertThat(creators.get(1).getId(), is(10L));
+        assertThat(creators.get(1).getName(), is("TINAMIの中の人"));
+        assertThat(creators.get(1).getThumbnailUrl(), is("http://www.tinami.com/supporter/images/profile/sp00000010_dc8dfb2063d236fc1832223c5de23760.gif"));
     }
 
     @Test
@@ -278,7 +312,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
         parameters.add(new BasicNameValuePair("safe", "0"));
         RequestPattern pattern = new RequestPattern(path, parameters, null);
 
-        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/contentlist/success_single_contents.xml"));
+        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/contentlist/success_single.xml"));
         Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
 
         addResponse(pattern, response);

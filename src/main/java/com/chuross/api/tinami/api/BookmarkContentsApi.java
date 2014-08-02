@@ -2,16 +2,16 @@ package com.chuross.api.tinami.api;
 
 import com.chuross.api.tinami.Context;
 import com.chuross.api.tinami.element.ContentList;
-import com.chuross.api.tinami.result.BookmarkContentResult;
+import com.chuross.api.tinami.result.BookmarkContentsResult;
 import com.chuross.common.library.http.HttpResponse;
 import com.chuross.common.library.util.XmlUtils;
 import org.apache.http.Header;
 
 import java.util.List;
 
-class BookmarkContentApi extends AbstractPagingContentListApi<BookmarkContentResult> {
+class BookmarkContentsApi extends AbstractPagingContentListApi<BookmarkContentsResult> {
 
-    public BookmarkContentApi(Context context, String authKey, int page, int perpage, boolean safe) {
+    public BookmarkContentsApi(Context context, String authKey, int page, int perpage, boolean safe) {
         super(context, authKey, page, perpage, safe);
     }
 
@@ -25,8 +25,8 @@ class BookmarkContentApi extends AbstractPagingContentListApi<BookmarkContentRes
     }
 
     @Override
-    protected BookmarkContentResult convert(HttpResponse response) throws Exception {
+    protected BookmarkContentsResult convert(HttpResponse response) throws Exception {
         ContentList list = XmlUtils.read(ContentList.class, response.getContentsAsString());
-        return new BookmarkContentResult(response.getStatus(), list);
+        return new BookmarkContentsResult(response.getStatus(), list);
     }
 }

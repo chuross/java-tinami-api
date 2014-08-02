@@ -7,10 +7,8 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
-public abstract class AbstractPagingContentListApi<T extends AbstractResult<?>> extends GetRequestApi<T> {
+public abstract class AbstractPagingContentListApi<T extends AbstractResult<?>> extends AbstractPagingApi<T> {
 
-    private int page;
-    private int perpage;
     private boolean safe;
 
     public AbstractPagingContentListApi(Context context, int page, int perpage, boolean safe) {
@@ -18,17 +16,13 @@ public abstract class AbstractPagingContentListApi<T extends AbstractResult<?>> 
     }
 
     public AbstractPagingContentListApi(Context context, String authKey, int page, int perpage, boolean safe) {
-        super(context, authKey);
-        this.page = page;
-        this.perpage = perpage;
+        super(context, authKey, page, perpage);
         this.safe = safe;
     }
 
     @Override
     protected void setParameters(List<NameValuePair> nameValuePairs) {
         super.setParameters(nameValuePairs);
-        nameValuePairs.add(new BasicNameValuePair("page", String.valueOf(page > 0 ? page : 1)));
-        nameValuePairs.add(new BasicNameValuePair("perpage", String.valueOf(perpage > 0 ? perpage : 1)));
         nameValuePairs.add(new BasicNameValuePair("safe", safe ? "1" : "0"));
     }
 }
