@@ -93,6 +93,15 @@ public class TinamiApi {
         });
     }
 
+    public Future<CollectionResult> collections(Executor executor, final int page, final int perpage, final boolean safe) {
+        return executeWithAuthentication(executor, new Callable<Api<CollectionResult>>() {
+            @Override
+            public Api<CollectionResult> call() throws Exception {
+                return new CollectionApi(context, account.getAuthKey(), page, perpage, safe);
+            }
+        });
+    }
+
     private <R extends AbstractAuthenticatedResult<?>> Future<R> executeWithAuthentication(Executor executor, final Callable<Api<R>> apiCallable) {
         return FutureUtils.executeOrNull(executor, new Callable<R>() {
             @Override

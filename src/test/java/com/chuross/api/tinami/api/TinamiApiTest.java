@@ -22,6 +22,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 
 public class TinamiApiTest extends HttpRequestTestCase {
 
@@ -152,6 +154,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
     public void 検索ができる() throws Exception {
         List<NameValuePair> parameters = Lists.newArrayList();
         parameters.add(new BasicNameValuePair("api_key", "mock"));
+        parameters.add(new BasicNameValuePair("auth_key", "piyo"));
         parameters.add(new BasicNameValuePair("text", "keyword"));
         parameters.add(new BasicNameValuePair("safe", "0"));
         parameters.add(new BasicNameValuePair("page", "1"));
@@ -207,94 +210,59 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
     @Test
     public void お気に入りクリエイターの作品が取得できる() throws Exception {
-        List<NameValuePair> parameters = Lists.newArrayList();
-        parameters.add(new BasicNameValuePair("api_key", "mock"));
-        parameters.add(new BasicNameValuePair("auth_key", "piyo"));
-        parameters.add(new BasicNameValuePair("page", "1"));
-        parameters.add(new BasicNameValuePair("perpage", "20"));
-        parameters.add(new BasicNameValuePair("safe", "0"));
-        RequestPattern pattern = new RequestPattern("/bookmark/content/list", parameters, null);
-
-        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/contentlist/success_single_contents.xml"));
-        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
-
-        addResponse(pattern, response);
-
-        BookmarkContentResult result = api.bookmarkContents(MoreExecutors.sameThreadExecutor(), 1, 20, false).get();
-        assertThat(result.getStatus(), is(200));
-        assertThat(result.isSuccess(), is(true));
-
-        ContentList list = result.getResult();
-        assertThat(list.getStatus(), is("ok"));
-        assertThat(list.getError(), nullValue());
-
-        List<Content> contents = list.getContents();
-        assertThat(contents.size(), is(1));
-
-        assertThat(contents.get(0).getId(), is(123456L));
-        assertThat(contents.get(0).getType(), is("illust"));
-        assertThat(contents.get(0).getTitle(), is("作品タイトル"));
-        assertThat(contents.get(0).getViewLevel(), is(ViewLevel.PUBLIC));
-        assertThat(contents.get(0).getAgeLevel(), is(1));
-        assertThat(contents.get(0).getThumbnails().size(), is(1));
-        assertThat(contents.get(0).getThumbnails().get(0).getUrl(), is("http://img.tinami.com/1.gif"));
-        assertThat(contents.get(0).getThumbnails().get(0).getWidth(), is(112));
-        assertThat(contents.get(0).getThumbnails().get(0).getHeight(), is(120));
+        コンテンツリストを取得できる("/bookmark/content/list", new Callable<Future<BookmarkContentResult>>() {
+            @Override
+            public Future<BookmarkContentResult> call() throws Exception {
+                return api.bookmarkContents(MoreExecutors.sameThreadExecutor(), 1, 20, false);
+            }
+        });
     }
 
     @Test
     public void 友達が支援した作品を取得できる() throws Exception {
-        List<NameValuePair> parameters = Lists.newArrayList();
-        parameters.add(new BasicNameValuePair("api_key", "mock"));
-        parameters.add(new BasicNameValuePair("auth_key", "piyo"));
-        parameters.add(new BasicNameValuePair("page", "1"));
-        parameters.add(new BasicNameValuePair("perpage", "20"));
-        parameters.add(new BasicNameValuePair("safe", "0"));
-        RequestPattern pattern = new RequestPattern("/friend/recommend/content/list", parameters, null);
-
-        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/contentlist/success_single_contents.xml"));
-        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
-
-        addResponse(pattern, response);
-
-        FriendRecommendResult result = api.friendRecommend(MoreExecutors.sameThreadExecutor(), 1, 20, false).get();
-        assertThat(result.getStatus(), is(200));
-        assertThat(result.isSuccess(), is(true));
-
-        ContentList list = result.getResult();
-        assertThat(list.getStatus(), is("ok"));
-        assertThat(list.getError(), nullValue());
-
-        List<Content> contents = list.getContents();
-        assertThat(contents.size(), is(1));
-
-        assertThat(contents.get(0).getId(), is(123456L));
-        assertThat(contents.get(0).getType(), is("illust"));
-        assertThat(contents.get(0).getTitle(), is("作品タイトル"));
-        assertThat(contents.get(0).getViewLevel(), is(ViewLevel.PUBLIC));
-        assertThat(contents.get(0).getAgeLevel(), is(1));
-        assertThat(contents.get(0).getThumbnails().size(), is(1));
-        assertThat(contents.get(0).getThumbnails().get(0).getUrl(), is("http://img.tinami.com/1.gif"));
-        assertThat(contents.get(0).getThumbnails().get(0).getWidth(), is(112));
-        assertThat(contents.get(0).getThumbnails().get(0).getHeight(), is(120));
+        コンテンツリストを取得できる("/friend/recommend/content/list", new Callable<Future<FriendRecommendResult>>() {
+            @Override
+            public Future<FriendRecommendResult> call() throws Exception {
+                return api.friendRecommend(MoreExecutors.sameThreadExecutor(), 1, 20, false);
+            }
+        });
     }
 
     @Test
     public void ウォッチキーワードの作品を取得できる() throws Exception {
+        コンテンツリストを取得できる("/watchkeyword/content/list", new Callable<Future<WatchKeywordResult>>() {
+            @Override
+            public Future<WatchKeywordResult> call() throws Exception {
+                return api.watchKeyword(MoreExecutors.sameThreadExecutor(), 1, 20, false);
+            }
+        });
+    }
+
+    @Test
+    public void コレクションを取得できる() throws Exception {
+        コンテンツリストを取得できる("/collection/list", new Callable<Future<CollectionResult>>() {
+            @Override
+            public Future<CollectionResult> call() throws Exception {
+                return api.collections(MoreExecutors.sameThreadExecutor(), 1, 20, false);
+            }
+        });
+    }
+
+    private <T extends AbstractResult<ContentList>> void コンテンツリストを取得できる(String path, Callable<Future<T>> apiCallable) throws Exception {
         List<NameValuePair> parameters = Lists.newArrayList();
         parameters.add(new BasicNameValuePair("api_key", "mock"));
         parameters.add(new BasicNameValuePair("auth_key", "piyo"));
         parameters.add(new BasicNameValuePair("page", "1"));
         parameters.add(new BasicNameValuePair("perpage", "20"));
         parameters.add(new BasicNameValuePair("safe", "0"));
-        RequestPattern pattern = new RequestPattern("/watchkeyword/content/list", parameters, null);
+        RequestPattern pattern = new RequestPattern(path, parameters, null);
 
         String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/contentlist/success_single_contents.xml"));
         Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
 
         addResponse(pattern, response);
 
-        WatchKeywordResult result = api.watchKeyword(MoreExecutors.sameThreadExecutor(), 1, 20, false).get();
+        T result = apiCallable.call().get();
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(true));
 
