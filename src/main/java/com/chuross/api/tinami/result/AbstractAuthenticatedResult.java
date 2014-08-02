@@ -8,8 +8,12 @@ public abstract class AbstractAuthenticatedResult<T extends RootElement> extends
         super(status, result);
     }
 
-    public boolean isAuthKeyExpired() {
+    public boolean isExpiredAuthKey() {
         return errorMessageExists("認証キーの有効期限が切れました");
+    }
+
+    public boolean isInvalidAuthKey() {
+        return errorMessageExists("認証キーが不正です");
     }
 
 }

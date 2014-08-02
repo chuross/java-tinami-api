@@ -33,13 +33,13 @@ public class TinamiApi {
     }
 
     public TinamiApi(String apiKey, Account account, RequestConfig config) {
-        context = new ApiContext(apiKey);
-        this.account = account;
-        this.config = config;
+        this(new ApiContext(apiKey), account, config);
     }
 
-    TinamiApi(Context context) {
+    TinamiApi(Context context, Account account, RequestConfig config) {
         this.context = context;
+        this.account = account;
+        this.config = config;
     }
 
     public Future<AuthenticationResult> login(Executor executor) {
@@ -77,7 +77,7 @@ public class TinamiApi {
         if(result == null) {
             return null;
         }
-        if(!result.isAuthKeyExpired()) {
+        if(!result.isExpiredAuthKey() && !result.isInvalidAuthKey()) {
             return result;
         }
         AuthenticationResult authenticationResult = FutureUtils.getOrNull(login(MoreExecutors.sameThreadExecutor()));
