@@ -220,7 +220,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
         addResponse(pattern, response);
 
-        BookmarkContentListResult result = api.bookmarkContents(MoreExecutors.sameThreadExecutor(), 1, 20, false).get();
+        BookmarkContentResult result = api.bookmarkContents(MoreExecutors.sameThreadExecutor(), 1, 20, false).get();
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(true));
 
@@ -257,7 +257,44 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
         addResponse(pattern, response);
 
-        FriendRecommendContentListResult result = api.friendRecommendContents(MoreExecutors.sameThreadExecutor(), 1, 20, false).get();
+        FriendRecommendResult result = api.friendRecommend(MoreExecutors.sameThreadExecutor(), 1, 20, false).get();
+        assertThat(result.getStatus(), is(200));
+        assertThat(result.isSuccess(), is(true));
+
+        ContentList list = result.getResult();
+        assertThat(list.getStatus(), is("ok"));
+        assertThat(list.getError(), nullValue());
+
+        List<Content> contents = list.getContents();
+        assertThat(contents.size(), is(1));
+
+        assertThat(contents.get(0).getId(), is(123456L));
+        assertThat(contents.get(0).getType(), is("illust"));
+        assertThat(contents.get(0).getTitle(), is("作品タイトル"));
+        assertThat(contents.get(0).getViewLevel(), is(ViewLevel.PUBLIC));
+        assertThat(contents.get(0).getAgeLevel(), is(1));
+        assertThat(contents.get(0).getThumbnails().size(), is(1));
+        assertThat(contents.get(0).getThumbnails().get(0).getUrl(), is("http://img.tinami.com/1.gif"));
+        assertThat(contents.get(0).getThumbnails().get(0).getWidth(), is(112));
+        assertThat(contents.get(0).getThumbnails().get(0).getHeight(), is(120));
+    }
+
+    @Test
+    public void ウォッチキーワードの作品を取得できる() throws Exception {
+        List<NameValuePair> parameters = Lists.newArrayList();
+        parameters.add(new BasicNameValuePair("api_key", "mock"));
+        parameters.add(new BasicNameValuePair("auth_key", "piyo"));
+        parameters.add(new BasicNameValuePair("page", "1"));
+        parameters.add(new BasicNameValuePair("perpage", "20"));
+        parameters.add(new BasicNameValuePair("safe", "0"));
+        RequestPattern pattern = new RequestPattern("/watchkeyword/content/list", parameters, null);
+
+        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/contentlist/success_single_contents.xml"));
+        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
+
+        addResponse(pattern, response);
+
+        WatchKeywordResult result = api.watchKeyword(MoreExecutors.sameThreadExecutor(), 1, 20, false).get();
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(true));
 

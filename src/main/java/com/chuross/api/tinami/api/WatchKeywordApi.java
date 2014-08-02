@@ -2,7 +2,7 @@ package com.chuross.api.tinami.api;
 
 import com.chuross.api.tinami.Context;
 import com.chuross.api.tinami.element.ContentList;
-import com.chuross.api.tinami.result.BookmarkContentListResult;
+import com.chuross.api.tinami.result.WatchKeywordResult;
 import com.chuross.common.library.api.GetRequestApi;
 import com.chuross.common.library.http.HttpResponse;
 import com.chuross.common.library.util.XmlUtils;
@@ -12,7 +12,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
-class BookmarkContentListApi extends GetRequestApi<BookmarkContentListResult> {
+public class WatchKeywordApi extends GetRequestApi<WatchKeywordResult> {
 
     private Context context;
     private String authKey;
@@ -20,7 +20,7 @@ class BookmarkContentListApi extends GetRequestApi<BookmarkContentListResult> {
     private int perpage;
     private boolean safe;
 
-    public BookmarkContentListApi(Context context, String authKey, int page, int perpage, boolean safe) {
+    public WatchKeywordApi(Context context, String authKey, int page, int perpage, boolean safe) {
         this.context = context;
         this.authKey = authKey;
         this.page = page;
@@ -30,7 +30,7 @@ class BookmarkContentListApi extends GetRequestApi<BookmarkContentListResult> {
 
     @Override
     protected String getUrl() {
-        return context.getUrl("/bookmark/content/list");
+        return context.getUrl("/watchkeyword/content/list");
     }
 
     @Override
@@ -47,8 +47,8 @@ class BookmarkContentListApi extends GetRequestApi<BookmarkContentListResult> {
     }
 
     @Override
-    protected BookmarkContentListResult convert(HttpResponse response) throws Exception {
+    protected WatchKeywordResult convert(HttpResponse response) throws Exception {
         ContentList list = XmlUtils.read(ContentList.class, response.getContentsAsString());
-        return new BookmarkContentListResult(response.getStatus(), list);
+        return new WatchKeywordResult(response.getStatus(), list);
     }
 }

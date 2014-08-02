@@ -66,20 +66,29 @@ public class TinamiApi {
         });
     }
 
-    public Future<BookmarkContentListResult> bookmarkContents(Executor executor, final int page, final int perpage, final boolean safe) {
-        return executeWithAuthentication(executor, new Callable<Api<BookmarkContentListResult>>() {
+    public Future<BookmarkContentResult> bookmarkContents(Executor executor, final int page, final int perpage, final boolean safe) {
+        return executeWithAuthentication(executor, new Callable<Api<BookmarkContentResult>>() {
             @Override
-            public Api<BookmarkContentListResult> call() throws Exception {
-                return new BookmarkContentListApi(context, account.getAuthKey(), page, perpage, safe);
+            public Api<BookmarkContentResult> call() throws Exception {
+                return new BookmarkContentApi(context, account.getAuthKey(), page, perpage, safe);
             }
         });
     }
 
-    public Future<FriendRecommendContentListResult> friendRecommendContents(Executor executor, final int page, final int perpage, final boolean safe) {
-        return executeWithAuthentication(executor, new Callable<Api<FriendRecommendContentListResult>>() {
+    public Future<FriendRecommendResult> friendRecommend(Executor executor, final int page, final int perpage, final boolean safe) {
+        return executeWithAuthentication(executor, new Callable<Api<FriendRecommendResult>>() {
             @Override
-            public Api<FriendRecommendContentListResult> call() throws Exception {
-                return new FriendRecommendContentListApi(context, account.getAuthKey(), page, perpage, safe);
+            public Api<FriendRecommendResult> call() throws Exception {
+                return new FriendRecommendApi(context, account.getAuthKey(), page, perpage, safe);
+            }
+        });
+    }
+
+    public Future<WatchKeywordResult> watchKeyword(Executor executor, final int page, final int perpage, final boolean safe) {
+        return executeWithAuthentication(executor, new Callable<Api<WatchKeywordResult>>() {
+            @Override
+            public Api<WatchKeywordResult> call() throws Exception {
+                return new WatchKeywordApi(context, account.getAuthKey(), page, perpage, safe);
             }
         });
     }

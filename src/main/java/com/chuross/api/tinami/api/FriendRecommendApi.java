@@ -2,7 +2,7 @@ package com.chuross.api.tinami.api;
 
 import com.chuross.api.tinami.Context;
 import com.chuross.api.tinami.element.ContentList;
-import com.chuross.api.tinami.result.FriendRecommendContentListResult;
+import com.chuross.api.tinami.result.FriendRecommendResult;
 import com.chuross.common.library.api.GetRequestApi;
 import com.chuross.common.library.http.HttpResponse;
 import com.chuross.common.library.util.XmlUtils;
@@ -12,7 +12,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
-class FriendRecommendContentListApi extends GetRequestApi<FriendRecommendContentListResult> {
+class FriendRecommendApi extends GetRequestApi<FriendRecommendResult> {
 
     private Context context;
     private String authKey;
@@ -20,7 +20,7 @@ class FriendRecommendContentListApi extends GetRequestApi<FriendRecommendContent
     private int perpage;
     private boolean safe;
 
-    public FriendRecommendContentListApi(Context context, String authKey, int page, int perpage, boolean safe) {
+    public FriendRecommendApi(Context context, String authKey, int page, int perpage, boolean safe) {
         this.context = context;
         this.authKey = authKey;
         this.page = page;
@@ -47,9 +47,9 @@ class FriendRecommendContentListApi extends GetRequestApi<FriendRecommendContent
     }
 
     @Override
-    protected FriendRecommendContentListResult convert(HttpResponse response) throws Exception {
+    protected FriendRecommendResult convert(HttpResponse response) throws Exception {
         ContentList list = XmlUtils.read(ContentList.class, response.getContentsAsString());
-        return new FriendRecommendContentListResult(response.getStatus(), list);
+        return new FriendRecommendResult(response.getStatus(), list);
     }
 
 }
