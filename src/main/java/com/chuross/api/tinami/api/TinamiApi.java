@@ -57,8 +57,22 @@ public class TinamiApi {
         });
     }
 
-    public Future<SearchResult> search(Executor executor, SearchParameter searchParameter) {
-        return new SearchApi(context, account.getAuthKey(), searchParameter).execute(executor, config, RETRY_COUNT);
+    public Future<SearchResult> search(final Executor executor, final SearchParameter searchParameter) {
+        return executeWithAuthentication(executor, new Callable<Api<SearchResult>>() {
+            @Override
+            public Api<SearchResult> call() throws Exception {
+                return new SearchApi(context, account.getAuthKey(), searchParameter);
+            }
+        });
+    }
+
+    public Future<BookmarkContentListResult> bookmarkContents(Executor executor, final int page, final int perpage, final boolean safe) {
+        return executeWithAuthentication(executor, new Callable<Api<BookmarkContentListResult>>() {
+            @Override
+            public Api<BookmarkContentListResult> call() throws Exception {
+                return new BookmarkContentListApi(context, account.getAuthKey(), page, perpage, safe);
+            }
+        });
     }
 
     private <R extends AbstractAuthenticatedResult<?>> Future<R> executeWithAuthentication(Executor executor, final Callable<Api<R>> apiCallable) {

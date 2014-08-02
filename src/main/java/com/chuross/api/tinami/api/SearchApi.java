@@ -1,7 +1,7 @@
 package com.chuross.api.tinami.api;
 
 import com.chuross.api.tinami.Context;
-import com.chuross.api.tinami.element.Search;
+import com.chuross.api.tinami.element.ContentList;
 import com.chuross.api.tinami.parameter.SearchParameter;
 import com.chuross.api.tinami.result.SearchResult;
 import com.chuross.common.library.api.GetRequestApi;
@@ -42,8 +42,8 @@ class SearchApi extends GetRequestApi<SearchResult> {
 
     @Override
     protected SearchResult convert(HttpResponse response) throws Exception {
-        Search search = XmlUtils.read(Search.class, response.getContentsAsString());
-        return new SearchResult(response.getStatus(), search);
+        ContentList list = XmlUtils.read(ContentList.class, response.getContentsAsString());
+        return new SearchResult(response.getStatus(), list);
     }
 
 }

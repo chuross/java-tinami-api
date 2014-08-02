@@ -17,7 +17,11 @@ public abstract class AbstractResult<T extends RootElement> extends com.chuross.
     }
 
     protected boolean errorMessageExists(String target) {
-        Error error = getResult().getError();
+        T result = getResult();
+        if(result == null) {
+            return false;
+        }
+        Error error = result.getError();
         if(error == null) {
             return false;
         }

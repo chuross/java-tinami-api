@@ -1,10 +1,10 @@
 package com.chuross.api.tinami.result;
 
-import com.chuross.api.tinami.element.Search;
+import com.chuross.api.tinami.element.ContentList;
 
-public class SearchResult extends AbstractResult<Search> {
+public class SearchResult extends AbstractAuthenticatedResult<ContentList> {
 
-    public SearchResult(int status, Search result) {
+    public SearchResult(int status, ContentList result) {
         super(status, result);
     }
 

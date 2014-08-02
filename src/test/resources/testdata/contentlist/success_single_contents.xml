@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rsp stat="ok">
+    <contents total="1" page="1" pages="1" perpage="20">
+        <content id="123456" type="illust">
+            <title>作品タイトル</title>
+            <view_level>public</view_level>
+            <age_level>1</age_level>
+            <thumbnails>
+                <thumbnail_150x150 url="http://img.tinami.com/1.gif" width="112" height="120"/>
+            </thumbnails>
+        </content>
+    </contents>
+</rsp>

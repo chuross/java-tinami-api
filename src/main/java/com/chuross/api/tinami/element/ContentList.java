@@ -5,7 +5,7 @@ import org.simpleframework.xml.*;
 import java.util.List;
 
 @Root(name = "rsp")
-public class Search implements RootElement {
+public class ContentList implements RootElement {
 
     @Attribute(name = "stat")
     private String status;

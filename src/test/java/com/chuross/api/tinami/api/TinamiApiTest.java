@@ -8,10 +8,7 @@ import com.chuross.api.tinami.MockContext;
 import com.chuross.api.tinami.ViewLevel;
 import com.chuross.api.tinami.element.*;
 import com.chuross.api.tinami.parameter.SearchParameterBuilder;
-import com.chuross.api.tinami.result.AuthenticationResult;
-import com.chuross.api.tinami.result.LogoutResult;
-import com.chuross.api.tinami.result.SearchResult;
-import com.chuross.api.tinami.result.UserInfoResult;
+import com.chuross.api.tinami.result.*;
 import com.chuross.testcase.http.HttpRequestTestCase;
 import com.chuross.testcase.http.RequestPattern;
 import com.chuross.testcase.http.Response;
@@ -161,7 +158,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
         parameters.add(new BasicNameValuePair("perpage", "20"));
         RequestPattern pattern = new RequestPattern("/content/search", parameters, null);
 
-        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/search/success.xml"));
+        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/contentlist/success_multi_contents.xml"));
         Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
 
         addResponse(pattern, response);
@@ -170,15 +167,11 @@ public class TinamiApiTest extends HttpRequestTestCase {
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(true));
 
-        Search search = result.getResult();
-        assertThat(search.getStatus(), is("ok"));
-        assertThat(search.getError(), nullValue());
-//        assertThat(search.getTotal(), is(486402L));
-//        assertThat(search.getPages(), is(162134));
-//        assertThat(search.getPage(), is(1));
-//        assertThat(search.getPerpage(), is(3));
+        ContentList list = result.getResult();
+        assertThat(list.getStatus(), is("ok"));
+        assertThat(list.getError(), nullValue());
 
-        List<Content> contents = search.getContents();
+        List<Content> contents = list.getContents();
         assertThat(contents.size(), is(3));
 
         assertThat(contents.get(0).getId(), is(123456L));
@@ -210,6 +203,43 @@ public class TinamiApiTest extends HttpRequestTestCase {
         assertThat(contents.get(2).getThumbnails().get(0).getUrl(), is("http://img.tinami.com/3.gif"));
         assertThat(contents.get(2).getThumbnails().get(0).getWidth(), is(112));
         assertThat(contents.get(2).getThumbnails().get(0).getHeight(), is(120));
+    }
+
+    @Test
+    public void お気に入りクリエイターの作品が取得できる() throws Exception {
+        List<NameValuePair> parameters = Lists.newArrayList();
+        parameters.add(new BasicNameValuePair("api_key", "mock"));
+        parameters.add(new BasicNameValuePair("auth_key", "piyo"));
+        parameters.add(new BasicNameValuePair("page", "1"));
+        parameters.add(new BasicNameValuePair("perpage", "20"));
+        parameters.add(new BasicNameValuePair("safe", "0"));
+        RequestPattern pattern = new RequestPattern("/bookmark/content/list", parameters, null);
+
+        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/contentlist/success_single_contents.xml"));
+        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
+
+        addResponse(pattern, response);
+
+        BookmarkContentListResult result = api.bookmarkContents(MoreExecutors.sameThreadExecutor(), 1, 20, false).get();
+        assertThat(result.getStatus(), is(200));
+        assertThat(result.isSuccess(), is(true));
+
+        ContentList list = result.getResult();
+        assertThat(list.getStatus(), is("ok"));
+        assertThat(list.getError(), nullValue());
+
+        List<Content> contents = list.getContents();
+        assertThat(contents.size(), is(1));
+
+        assertThat(contents.get(0).getId(), is(123456L));
+        assertThat(contents.get(0).getType(), is("illust"));
+        assertThat(contents.get(0).getTitle(), is("作品タイトル"));
+        assertThat(contents.get(0).getViewLevel(), is(ViewLevel.PUBLIC));
+        assertThat(contents.get(0).getAgeLevel(), is(1));
+        assertThat(contents.get(0).getThumbnails().size(), is(1));
+        assertThat(contents.get(0).getThumbnails().get(0).getUrl(), is("http://img.tinami.com/1.gif"));
+        assertThat(contents.get(0).getThumbnails().get(0).getWidth(), is(112));
+        assertThat(contents.get(0).getThumbnails().get(0).getHeight(), is(120));
     }
 
 }
