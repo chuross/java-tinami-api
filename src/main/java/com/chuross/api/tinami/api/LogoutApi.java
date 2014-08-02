@@ -1,7 +1,7 @@
 package com.chuross.api.tinami.api;
 
 import com.chuross.api.tinami.Context;
-import com.chuross.api.tinami.element.Logout;
+import com.chuross.api.tinami.element.Response;
 import com.chuross.api.tinami.result.LogoutResult;
 import com.chuross.common.library.http.HttpResponse;
 import com.chuross.common.library.util.XmlUtils;
@@ -26,7 +26,7 @@ class LogoutApi extends GetRequestApi<LogoutResult> {
 
     @Override
     protected LogoutResult convert(HttpResponse response) throws Exception {
-        Logout logout = XmlUtils.read(Logout.class, response.getContentsAsString());
-        return new LogoutResult(response.getStatus(), logout);
+        Response apiResponse = XmlUtils.read(Response.class, response.getContentsAsString());
+        return new LogoutResult(response.getStatus(), apiResponse);
     }
 }

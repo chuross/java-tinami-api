@@ -102,6 +102,15 @@ public class TinamiApi {
         });
     }
 
+    public Future<AppendCollectionResult> appendCollection(Executor executor, final long contentId) {
+        return executeWithAuthentication(executor, new Callable<Api<AppendCollectionResult>>() {
+            @Override
+            public Api<AppendCollectionResult> call() throws Exception {
+                return new AppendCollectionApi(context, account.getAuthKey(), contentId);
+            }
+        });
+    }
+
     private <R extends AbstractAuthenticatedResult<?>> Future<R> executeWithAuthentication(Executor executor, final Callable<Api<R>> apiCallable) {
         return FutureUtils.executeOrNull(executor, new Callable<R>() {
             @Override

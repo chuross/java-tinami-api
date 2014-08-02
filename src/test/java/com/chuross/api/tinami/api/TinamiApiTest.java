@@ -91,7 +91,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
         parameters.add(new BasicNameValuePair("auth_key", "piyo"));
         RequestPattern pattern = new RequestPattern("/logout", parameters, null);
 
-        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/logout/success.xml"));
+        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/response/success.xml"));
         Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
 
         addResponse(pattern, response);
@@ -100,7 +100,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(true));
 
-        Logout logout = result.getResult();
+        com.chuross.api.tinami.element.Response logout = result.getResult();
         assertThat(logout.getStatus(), is("ok"));
     }
 
@@ -246,6 +246,27 @@ public class TinamiApiTest extends HttpRequestTestCase {
                 return api.collections(MoreExecutors.sameThreadExecutor(), 1, 20, false);
             }
         });
+    }
+
+    @Test
+    public void コレクションに追加できる() throws Exception {
+        List<NameValuePair> parameters = Lists.newArrayList();
+        parameters.add(new BasicNameValuePair("api_key", "mock"));
+        parameters.add(new BasicNameValuePair("auth_key", "piyo"));
+        parameters.add(new BasicNameValuePair("cont_id", "1234567890"));
+        RequestPattern pattern = new RequestPattern("/collection/add", parameters, null);
+
+        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/response/success.xml"));
+        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
+
+        addResponse(pattern, response);
+
+        AppendCollectionResult result = api.appendCollection(MoreExecutors.sameThreadExecutor(), 1234567890L).get();
+        assertThat(result.getStatus(), is(200));
+        assertThat(result.isSuccess(), is(true));
+
+        com.chuross.api.tinami.element.Response logout = result.getResult();
+        assertThat(logout.getStatus(), is("ok"));
     }
 
     private <T extends AbstractResult<ContentList>> void コンテンツリストを取得できる(String path, Callable<Future<T>> apiCallable) throws Exception {

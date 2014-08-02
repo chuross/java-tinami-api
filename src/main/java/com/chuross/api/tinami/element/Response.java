@@ -5,7 +5,7 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
 @Root(name = "rsp")
-public class Logout implements RootElement {
+public class Response implements RootElement {
 
     @Attribute(name = "stat")
     private String status;
