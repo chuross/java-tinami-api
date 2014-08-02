@@ -1,31 +1,31 @@
 package com.chuross.api.tinami.api;
 
 import com.chuross.api.tinami.Context;
-import com.chuross.api.tinami.element.UserInfo;
-import com.chuross.api.tinami.result.UserInfoResult;
+import com.chuross.api.tinami.element.Logout;
+import com.chuross.api.tinami.result.LogoutResult;
 import com.chuross.common.library.api.GetRequestApi;
 import com.chuross.common.library.http.HttpResponse;
+import com.chuross.common.library.util.JsonUtils;
 import com.chuross.common.library.util.XmlUtils;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.simpleframework.xml.core.Persister;
 
 import java.util.List;
 
-class UserInfoApi extends GetRequestApi<UserInfoResult> {
+class LogoutApi extends GetRequestApi<LogoutResult> {
 
     private Context context;
-    private String  authKey;
+    private String authKey;
 
-    public UserInfoApi(Context context, String authKey) {
+    public LogoutApi(Context context, String authKey) {
         this.context = context;
         this.authKey = authKey;
     }
 
     @Override
     protected String getUrl() {
-        return context.getSecureUrl("/login/info");
+        return context.getUrl("/logout");
     }
 
     @Override
@@ -39,9 +39,8 @@ class UserInfoApi extends GetRequestApi<UserInfoResult> {
     }
 
     @Override
-    protected UserInfoResult convert(HttpResponse response) throws Exception {
-        UserInfo info = XmlUtils.read(UserInfo.class, response.getContentsAsString());
-        return new UserInfoResult(response.getStatus(), info);
+    protected LogoutResult convert(HttpResponse response) throws Exception {
+        Logout logout = XmlUtils.read(Logout.class, response.getContentsAsString());
+        return new LogoutResult(response.getStatus(), logout);
     }
-
 }

@@ -5,6 +5,7 @@ import com.chuross.api.tinami.element.Authentication;
 import com.chuross.api.tinami.result.AuthenticationResult;
 import com.chuross.common.library.api.PostRequestApi;
 import com.chuross.common.library.http.HttpResponse;
+import com.chuross.common.library.util.XmlUtils;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -42,7 +43,7 @@ class AuthenticationApi extends PostRequestApi<AuthenticationResult> {
 
     @Override
     protected AuthenticationResult convert(HttpResponse response) throws Exception {
-        Authentication authentication = new Persister().read(Authentication.class, response.getContentsAsString("UTF-8"));
+        Authentication authentication = XmlUtils.read(Authentication.class, response.getContentsAsString());
         return new AuthenticationResult(response.getStatus(), authentication);
     }
 }

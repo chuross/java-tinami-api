@@ -5,8 +5,10 @@ import static org.hamcrest.CoreMatchers.*;
 
 import com.chuross.api.tinami.MockContext;
 import com.chuross.api.tinami.element.Authentication;
+import com.chuross.api.tinami.element.Logout;
 import com.chuross.api.tinami.element.UserInfo;
 import com.chuross.api.tinami.result.AuthenticationResult;
+import com.chuross.api.tinami.result.LogoutResult;
 import com.chuross.api.tinami.result.UserInfoResult;
 import com.chuross.testcase.http.HttpRequestTestCase;
 import com.chuross.testcase.http.RequestPattern;
@@ -47,7 +49,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
         addResponse(pattern, response);
 
-        AuthenticationResult result = api.authenticate(MoreExecutors.sameThreadExecutor(), "hoge", "fuga").get();
+        AuthenticationResult result = api.login(MoreExecutors.sameThreadExecutor(), "hoge", "fuga").get();
         assertThat(result.isSuccess(), is(true));
         assertThat(result.getStatus(), is(200));
 
@@ -70,7 +72,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
         addResponse(pattern, response);
 
-        AuthenticationResult result = api.authenticate(MoreExecutors.sameThreadExecutor(), "hoge", "fuga").get();
+        AuthenticationResult result = api.login(MoreExecutors.sameThreadExecutor(), "hoge", "fuga").get();
         assertThat(result.isSuccess(), is(false));
         assertThat(result.getStatus(), is(200));
         assertThat(result.isLoginFailed(), is(true));
@@ -78,6 +80,26 @@ public class TinamiApiTest extends HttpRequestTestCase {
         Authentication authentication = result.getResult();
         assertThat(authentication.getStatus(), is("fail"));
         assertThat(authentication.getError().getMessage(), is("Login failed "));
+    }
+
+    @Test
+    public void ログアウトできる() throws Exception {
+        List<NameValuePair> parameters = Lists.newArrayList();
+        parameters.add(new BasicNameValuePair("api_key", null));
+        parameters.add(new BasicNameValuePair("auth_key", null));
+        RequestPattern pattern = new RequestPattern("/logout", parameters, null);
+
+        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/logout/success.xml"));
+        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
+
+        addResponse(pattern, response);
+
+        LogoutResult result = api.logout(MoreExecutors.sameThreadExecutor(), null).get();
+        assertThat(result.isSuccess(), is(true));
+        assertThat(result.getStatus(), is(200));
+
+        Logout logout = result.getResult();
+        assertThat(logout.getStatus(), is("ok"));
     }
 
     @Test

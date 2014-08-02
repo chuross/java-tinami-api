@@ -3,6 +3,7 @@ package com.chuross.api.tinami.api;
 import com.chuross.api.tinami.ApiContext;
 import com.chuross.api.tinami.Context;
 import com.chuross.api.tinami.result.AuthenticationResult;
+import com.chuross.api.tinami.result.LogoutResult;
 import com.chuross.api.tinami.result.UserInfoResult;
 import org.apache.http.client.config.RequestConfig;
 
@@ -30,8 +31,12 @@ public class TinamiApi {
         this.context = context;
     }
 
-    public Future<AuthenticationResult> authenticate(Executor executor, String email, String password) {
+    public Future<AuthenticationResult> login(Executor executor, String email, String password) {
         return new AuthenticationApi(context, email, password).execute(executor, config, RETRY_COUNT);
+    }
+
+    public Future<LogoutResult> logout(Executor executor, String authKey) {
+        return new LogoutApi(context, authKey).execute(executor, config, RETRY_COUNT);
     }
 
     public Future<UserInfoResult> userInfo(Executor executor, String authKey) {
