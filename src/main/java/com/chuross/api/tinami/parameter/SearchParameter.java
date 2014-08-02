@@ -96,14 +96,14 @@ public class SearchParameter {
         if(page < 0) {
             return;
         }
-        parameters.add(new BasicNameValuePair("page", String.valueOf(page)));
+        parameters.add(new BasicNameValuePair("page", String.valueOf(page > 0 ? page : 1)));
     }
 
     private void setPerpageIfNotNull(List<NameValuePair> parameters) {
         if(perpage < 0) {
             return;
         }
-        parameters.add(new BasicNameValuePair("perpage", String.valueOf(perpage)));
+        parameters.add(new BasicNameValuePair("perpage", String.valueOf(perpage > 0 ? perpage : 1)));
     }
 
     private void setCreatorIdIfNotNull(List<NameValuePair> parameters) {

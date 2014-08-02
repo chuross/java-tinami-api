@@ -13,10 +13,10 @@ public class SearchParameterBuilder implements Cloneable, Serializable {
     private Expression expression;
     private Sort sort;
     private List<ContentType> contetntTypes;
-    private int page = 1;
-    private int perpage = 20;
+    private int page;
+    private int perpage;
     private long creatorId;
-    private boolean safe = false;
+    private boolean safe;
 
     public String getAuthKey() {
         return authKey;

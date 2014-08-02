@@ -75,6 +75,15 @@ public class TinamiApi {
         });
     }
 
+    public Future<FriendRecommendContentListResult> friendRecommendContents(Executor executor, final int page, final int perpage, final boolean safe) {
+        return executeWithAuthentication(executor, new Callable<Api<FriendRecommendContentListResult>>() {
+            @Override
+            public Api<FriendRecommendContentListResult> call() throws Exception {
+                return new FriendRecommendContentListApi(context, account.getAuthKey(), page, perpage, safe);
+            }
+        });
+    }
+
     private <R extends AbstractAuthenticatedResult<?>> Future<R> executeWithAuthentication(Executor executor, final Callable<Api<R>> apiCallable) {
         return FutureUtils.executeOrNull(executor, new Callable<R>() {
             @Override
