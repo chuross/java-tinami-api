@@ -5,7 +5,6 @@ import com.chuross.api.tinami.element.Logout;
 import com.chuross.api.tinami.result.LogoutResult;
 import com.chuross.common.library.api.GetRequestApi;
 import com.chuross.common.library.http.HttpResponse;
-import com.chuross.common.library.util.JsonUtils;
 import com.chuross.common.library.util.XmlUtils;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
