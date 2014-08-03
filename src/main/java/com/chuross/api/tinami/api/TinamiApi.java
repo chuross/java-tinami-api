@@ -3,7 +3,6 @@ package com.chuross.api.tinami.api;
 import com.chuross.api.tinami.Account;
 import com.chuross.api.tinami.ApiContext;
 import com.chuross.api.tinami.Context;
-import com.chuross.api.tinami.OnLoginSessionExpiredListener;
 import com.chuross.api.tinami.parameter.ContentType;
 import com.chuross.api.tinami.parameter.SearchParameter;
 import com.chuross.api.tinami.result.*;
@@ -23,7 +22,6 @@ public class TinamiApi extends Service<String> {
     private Account account;
     private RequestConfig config;
     private Context context;
-    private OnLoginSessionExpiredListener listener;
 
     public TinamiApi(String apiKey, Account account) {
         this(apiKey, account, RequestConfig.custom().setConnectTimeout(TIME_OUT).setSocketTimeout(TIME_OUT).build());
