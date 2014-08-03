@@ -118,7 +118,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
     }
 
     @Test
-    public void クリエイター情報が取得できる() throws Exception {
+    public void クリエイター情報付のユーザー情報が取得できる() throws Exception {
         List<NameValuePair> parameters = Lists.newArrayList();
         parameters.add(new BasicNameValuePair("api_key", "mock"));
         parameters.add(new BasicNameValuePair("auth_key", "piyo"));
@@ -369,6 +369,30 @@ public class TinamiApiTest extends HttpRequestTestCase {
         assertThat(content.getTags().get(2), is("姫"));
         assertThat(content.getTags().get(3), is("騎士"));
         assertThat(content.getCreatedAt(), is(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.JAPAN).parse("2014-08-02 01:33:42")));
+    }
+
+    @Test
+    public void クリエイター情報を取得できる() throws Exception {
+        List<NameValuePair> parameters = Lists.newArrayList();
+        parameters.add(new BasicNameValuePair("api_key", "mock"));
+        parameters.add(new BasicNameValuePair("auth_key", "piyo"));
+        parameters.add(new BasicNameValuePair("prof_id", "123456789"));
+        RequestPattern pattern = new RequestPattern("/creator/info", parameters, null);
+
+        addResponse(pattern, getResponse(200, "/testdata/creator_info/success.xml"));
+
+        CreatorInfoResult result = api.creatorInfo(MoreExecutors.sameThreadExecutor(), 123456789L).get();
+        assertThat(result.getStatus(), is(200));
+        assertThat(result.isSuccess(), is(true));
+
+        CreatorInfo info = result.getResult();
+        assertThat(info.getStatus(), is("ok"));
+        assertThat(info.getError(), nullValue());
+
+        Creator creator = info.getCreator();
+        assertThat(creator.getName(), is("hoge"));
+        assertThat(creator.getThumbnailUrl(), is("http://hogefuga.com"));
+        assertThat(creator.isBookmarkAppended(), is(true));
     }
 
     private <T extends AbstractResult<ContentList>> void ページングコンテンツリストを取得できる(String path, Callable<Future<T>> apiCallable) throws Exception {

@@ -144,6 +144,15 @@ public class TinamiApi {
         });
     }
 
+    public Future<CreatorInfoResult> creatorInfo(Executor executor, final long creatorId) {
+        return executeWithAuthentication(executor, new Callable<Api<CreatorInfoResult>>() {
+            @Override
+            public Api<CreatorInfoResult> call() throws Exception {
+                return new CreatorInfoApi(context, account.getAuthKey(), creatorId);
+            }
+        });
+    }
+
     private <R extends AbstractAuthenticatedResult<?>> Future<R> executeWithAuthentication(Executor executor, final Callable<Api<R>> apiCallable) {
         return FutureUtils.executeOrNull(executor, new Callable<R>() {
             @Override

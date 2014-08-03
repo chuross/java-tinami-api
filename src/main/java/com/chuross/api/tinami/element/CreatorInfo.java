@@ -4,14 +4,14 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
-@Root(name = "rsp")
-public class CreatorList implements RootElement {
+@Root
+public class CreatorInfo implements RootElement {
 
     @Attribute(name = "stat")
     private String status;
 
     @Element
-    private Creators creators;
+    private Creator creator;
 
     @Element(name = "err", required = false)
     private Error error;
@@ -21,8 +21,8 @@ public class CreatorList implements RootElement {
         return status;
     }
 
-    public Creators getCreators() {
-        return creators;
+    public Creator getCreator() {
+        return creator;
     }
 
     @Override

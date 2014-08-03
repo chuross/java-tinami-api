@@ -5,11 +5,11 @@ import org.simpleframework.xml.Element;
 
 public class Creator {
 
-    @Attribute
+    @Attribute(required = false)
     private long id;
 
     @Attribute(name = "isbookmark", required = false)
-    private boolean bookmarkAppended;
+    private int bookmarkAppended;
 
     @Element(required = false)
     private String name;
@@ -22,7 +22,7 @@ public class Creator {
     }
 
     public boolean isBookmarkAppended() {
-        return bookmarkAppended;
+        return bookmarkAppended == 1;
     }
 
     public String getName() {

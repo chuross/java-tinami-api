@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rsp stat="ok">
+    <creator isbookmark="1">
+        <name>hoge</name>
+        <thumbnail>http://hogefuga.com</thumbnail>
+    </creator>
+</rsp>
