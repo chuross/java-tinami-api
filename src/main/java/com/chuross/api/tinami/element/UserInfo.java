@@ -10,23 +10,18 @@ public class UserInfo implements RootElement {
     @Attribute(name = "stat")
     private String status;
 
-    @Element(name = "err", required = false)
-    private Error error;
-
-    @Element
+    @Element(required = false)
     private User user;
 
     @Element(required = false)
     private Creator creator;
 
+    @Element(name = "err", required = false)
+    private Error error;
+
     @Override
     public String getStatus() {
         return status;
-    }
-
-    @Override
-    public Error getError() {
-        return error;
     }
 
     public User getUser() {
@@ -35,6 +30,11 @@ public class UserInfo implements RootElement {
 
     public Creator getCreator() {
         return creator;
+    }
+
+    @Override
+    public Error getError() {
+        return error;
     }
 
 }

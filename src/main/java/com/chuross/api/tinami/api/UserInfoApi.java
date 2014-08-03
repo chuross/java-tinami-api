@@ -26,7 +26,7 @@ class UserInfoApi extends GetRequestApi<UserInfoResult> {
 
     @Override
     protected UserInfoResult convert(HttpResponse response) throws Exception {
-        UserInfo info = XmlUtils.read(UserInfo.class, response.getContentsAsString());
+        UserInfo info = XmlUtils.read(UserInfo.class, response.getContentsAsString(), false);
         return new UserInfoResult(response.getStatus(), info);
     }
 

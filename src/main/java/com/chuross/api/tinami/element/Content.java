@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Callable;
 
-@Root
 public class Content {
 
     private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.JAPAN);

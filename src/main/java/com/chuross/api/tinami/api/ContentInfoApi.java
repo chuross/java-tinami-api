@@ -39,7 +39,7 @@ class ContentInfoApi extends GetRequestApi<ContentInfoResult> {
 
     @Override
     protected ContentInfoResult convert(HttpResponse response) throws Exception {
-        ContentInfo info = XmlUtils.read(ContentInfo.class, response.getContentsAsString());
+        ContentInfo info = XmlUtils.read(ContentInfo.class, response.getContentsAsString(), false);
         return new ContentInfoResult(response.getStatus(), info);
     }
 

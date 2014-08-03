@@ -40,7 +40,7 @@ class AppendCommentApi extends GetRequestApi<AppendCommentResult> {
 
     @Override
     protected AppendCommentResult convert(HttpResponse response) throws Exception {
-        Response responseElement = XmlUtils.read(Response.class, response.getContentsAsString());
+        Response responseElement = XmlUtils.read(Response.class, response.getContentsAsString(), false);
         return new AppendCommentResult(response.getStatus(), responseElement);
     }
 }

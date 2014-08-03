@@ -29,9 +29,8 @@ abstract class GetRequestApi<T extends AbstractResult<?>> extends com.chuross.co
     @Override
     protected void setParameters(List<NameValuePair> nameValuePairs) {
         nameValuePairs.add(new BasicNameValuePair("api_key", context.getApiKey()));
-        if(StringUtils.isBlank(authKey)) {
-            return;
+        if(!StringUtils.isBlank(authKey)) {
+            nameValuePairs.add(new BasicNameValuePair("auth_key", authKey));
         }
-        nameValuePairs.add(new BasicNameValuePair("auth_key", authKey));
     }
 }

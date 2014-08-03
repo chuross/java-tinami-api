@@ -37,7 +37,7 @@ class CreatorInfoApi extends GetRequestApi<CreatorInfoResult> {
 
     @Override
     protected CreatorInfoResult convert(HttpResponse response) throws Exception {
-        CreatorInfo info = XmlUtils.read(CreatorInfo.class, response.getContentsAsString());
+        CreatorInfo info = XmlUtils.read(CreatorInfo.class, response.getContentsAsString(), false);
         return new CreatorInfoResult(response.getStatus(), info);
     }
 

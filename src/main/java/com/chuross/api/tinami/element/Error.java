@@ -22,7 +22,7 @@ public class Error {
         if(messages.length == 0) {
             return new String[0];
         }
-        return Arrays.copyOfRange(messages, 0, messages.length - 1);
+        return Arrays.copyOfRange(messages, 0, messages.length);
     }
 
 }

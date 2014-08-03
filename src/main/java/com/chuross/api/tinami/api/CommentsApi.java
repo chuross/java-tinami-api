@@ -11,11 +11,11 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
-class CommentListApi extends GetRequestApi<CommentListResult> {
+class CommentsApi extends GetRequestApi<CommentListResult> {
 
     private long contentId;
 
-    public CommentListApi(Context context, long contentId) {
+    public CommentsApi(Context context, long contentId) {
         super(context);
         this.contentId = contentId;
     }
@@ -37,7 +37,7 @@ class CommentListApi extends GetRequestApi<CommentListResult> {
 
     @Override
     protected CommentListResult convert(HttpResponse response) throws Exception {
-        CommentList list = XmlUtils.read(CommentList.class, response.getContentsAsString());
+        CommentList list = XmlUtils.read(CommentList.class, response.getContentsAsString(), false);
         return new CommentListResult(response.getStatus(), list);
     }
 

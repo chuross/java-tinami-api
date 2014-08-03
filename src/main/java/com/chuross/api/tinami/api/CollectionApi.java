@@ -26,7 +26,7 @@ class CollectionApi extends AbstractPagingContentListApi<CollectionResult> {
 
     @Override
     protected CollectionResult convert(HttpResponse response) throws Exception {
-        ContentList list = XmlUtils.read(ContentList.class, response.getContentsAsString());
+        ContentList list = XmlUtils.read(ContentList.class, response.getContentsAsString(), false);
         return new CollectionResult(response.getStatus(), list);
     }
 }

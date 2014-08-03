@@ -37,7 +37,7 @@ class RemoveCommentApi extends GetRequestApi<RemoveCommentResult> {
 
     @Override
     protected RemoveCommentResult convert(HttpResponse response) throws Exception {
-        Response responseElement = XmlUtils.read(Response.class, response.getContentsAsString());
+        Response responseElement = XmlUtils.read(Response.class, response.getContentsAsString(), false);
         return new RemoveCommentResult(response.getStatus(), responseElement);
     }
 

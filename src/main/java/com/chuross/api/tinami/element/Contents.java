@@ -19,7 +19,7 @@ public class Contents {
     @Attribute
     private int perpage;
 
-    @ElementList(inline = true)
+    @ElementList(inline = true, required = false, empty = false)
     private List<Content> list;
 
     public long getTotal() {

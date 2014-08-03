@@ -26,7 +26,7 @@ class LogoutApi extends GetRequestApi<LogoutResult> {
 
     @Override
     protected LogoutResult convert(HttpResponse response) throws Exception {
-        Response responseElement = XmlUtils.read(Response.class, response.getContentsAsString());
+        Response responseElement = XmlUtils.read(Response.class, response.getContentsAsString(), false);
         return new LogoutResult(response.getStatus(), responseElement);
     }
 }

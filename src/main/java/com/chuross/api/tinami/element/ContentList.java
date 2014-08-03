@@ -8,10 +8,10 @@ public class ContentList implements RootElement {
     @Attribute(name = "stat")
     private String status;
 
-    @Element
+    @Element(required = false)
     private Contents contents;
 
-    @Attribute(name = "err", required = false)
+    @Element(name = "err", required = false)
     private Error error;
 
     @Override

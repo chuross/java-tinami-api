@@ -10,7 +10,7 @@ public class CreatorList implements RootElement {
     @Attribute(name = "stat")
     private String status;
 
-    @Element
+    @Element(required = false)
     private Creators creators;
 
     @Element(name = "err", required = false)

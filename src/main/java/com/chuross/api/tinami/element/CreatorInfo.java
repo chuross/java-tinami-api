@@ -10,7 +10,7 @@ public class CreatorInfo implements RootElement {
     @Attribute(name = "stat")
     private String status;
 
-    @Element
+    @Element(required = false)
     private Creator creator;
 
     @Element(name = "err", required = false)

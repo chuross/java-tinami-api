@@ -13,7 +13,7 @@ public class CommentList implements RootElement {
     @Attribute(name = "stat")
     private String status;
 
-    @ElementList
+    @ElementList(required = false)
     private List<Comment> comments;
 
     @Element(name = "err", required = false)

@@ -26,7 +26,7 @@ class FriendRecommendApi extends AbstractPagingContentListApi<FriendRecommendRes
 
     @Override
     protected FriendRecommendResult convert(HttpResponse response) throws Exception {
-        ContentList list = XmlUtils.read(ContentList.class, response.getContentsAsString());
+        ContentList list = XmlUtils.read(ContentList.class, response.getContentsAsString(), false);
         return new FriendRecommendResult(response.getStatus(), list);
     }
 

@@ -37,7 +37,7 @@ class AppendBookmarkCreatorsApi extends GetRequestApi<AppendBookmarkCreatorsResu
 
     @Override
     protected AppendBookmarkCreatorsResult convert(HttpResponse response) throws Exception {
-        Response responseElement = XmlUtils.read(Response.class, response.getContentsAsString());
+        Response responseElement = XmlUtils.read(Response.class, response.getContentsAsString(), false);
         return new AppendBookmarkCreatorsResult(response.getStatus(), responseElement);
     }
 

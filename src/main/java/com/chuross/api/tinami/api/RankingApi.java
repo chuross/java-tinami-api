@@ -38,7 +38,7 @@ class RankingApi extends GetRequestApi<RankingResult> {
 
     @Override
     protected RankingResult convert(HttpResponse response) throws Exception {
-        ContentList list = XmlUtils.read(ContentList.class, response.getContentsAsString());
+        ContentList list = XmlUtils.read(ContentList.class, response.getContentsAsString(), false);
         return new RankingResult(response.getStatus(), list);
     }
 }

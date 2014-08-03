@@ -19,7 +19,7 @@ public class Creators {
     @Attribute
     private int perpage;
 
-    @ElementList(inline = true)
+    @ElementList(inline = true, empty = false)
     private List<Creator> list;
 
     public long getTotal() {

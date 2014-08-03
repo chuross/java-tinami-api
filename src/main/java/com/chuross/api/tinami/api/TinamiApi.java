@@ -154,7 +154,7 @@ public class TinamiApi extends Service<String> {
     }
 
     public Future<CommentListResult> comments(Executor executor, long contentId) {
-        return new CommentListApi(context, contentId).execute(executor, config, RETRY_COUNT);
+        return new CommentsApi(context, contentId).execute(executor, config, RETRY_COUNT);
     }
 
     public Future<AppendCommentResult> appendComment(Executor executor, final long contentId, final String comment) {

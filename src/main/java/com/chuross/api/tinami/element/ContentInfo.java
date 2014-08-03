@@ -10,10 +10,10 @@ public class ContentInfo implements RootElement {
     @Attribute(name = "stat")
     private String status;
 
-    @Element
+    @Element(required = false)
     private Content content;
 
-    @Attribute(name = "err", required = false)
+    @Element(name = "err", required = false)
     private Error error;
 
     @Override

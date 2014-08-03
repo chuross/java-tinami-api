@@ -37,7 +37,7 @@ class AppendCollectionApi extends GetRequestApi<AppendCollectionResult> {
 
     @Override
     protected AppendCollectionResult convert(HttpResponse response) throws Exception {
-        Response responseElement = XmlUtils.read(Response.class, response.getContentsAsString());
+        Response responseElement = XmlUtils.read(Response.class, response.getContentsAsString(), false);
         return new AppendCollectionResult(response.getStatus(), responseElement);
     }
 }

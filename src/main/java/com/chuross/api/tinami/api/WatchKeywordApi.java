@@ -26,7 +26,7 @@ class WatchKeywordApi extends AbstractPagingContentListApi<WatchKeywordResult> {
 
     @Override
     protected WatchKeywordResult convert(HttpResponse response) throws Exception {
-        ContentList list = XmlUtils.read(ContentList.class, response.getContentsAsString());
+        ContentList list = XmlUtils.read(ContentList.class, response.getContentsAsString(), false);
         return new WatchKeywordResult(response.getStatus(), list);
     }
 }
