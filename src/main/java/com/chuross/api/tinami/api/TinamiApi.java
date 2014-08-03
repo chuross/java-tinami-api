@@ -4,7 +4,6 @@ import com.chuross.api.tinami.Account;
 import com.chuross.api.tinami.ApiContext;
 import com.chuross.api.tinami.Context;
 import com.chuross.api.tinami.OnLoginSessionExpiredListener;
-import com.chuross.api.tinami.element.ContentInfo;
 import com.chuross.api.tinami.parameter.ContentType;
 import com.chuross.api.tinami.parameter.SearchParameter;
 import com.chuross.api.tinami.result.*;
@@ -155,6 +154,15 @@ public class TinamiApi {
 
     public Future<CommentListResult> comments(Executor executor, long contentId) {
         return new CommentListApi(context, contentId).execute(executor, config, RETRY_COUNT);
+    }
+
+    public Future<AppendCommentResult> appendComment(Executor executor, final long contentId, final String comment) {
+        return executeWithAuthentication(executor, new Callable<Api<AppendCommentResult>>() {
+            @Override
+            public Api<AppendCommentResult> call() throws Exception {
+                return new AppendCommentApi(context, account.getAuthKey(), contentId, comment);
+            }
+        });
     }
 
     private <R extends AbstractAuthenticatedResult<?>> Future<R> executeWithAuthentication(Executor executor, final Callable<Api<R>> apiCallable) {

@@ -430,6 +430,25 @@ public class TinamiApiTest extends HttpRequestTestCase {
         assertThat(comments.get(2).getBody(), is("コメント３"));
     }
 
+    @Test
+    public void コメントを追加できる() throws Exception {
+        List<NameValuePair> parameters = Lists.newArrayList();
+        parameters.add(new BasicNameValuePair("api_key", "mock"));
+        parameters.add(new BasicNameValuePair("auth_key", "piyo"));
+        parameters.add(new BasicNameValuePair("cont_id", "123456789"));
+        parameters.add(new BasicNameValuePair("comment", "これコメント"));
+        RequestPattern pattern = new RequestPattern("/content/comment/add", parameters, null);
+
+        addResponse(pattern, getResponse(200, "/testdata/response/success.xml"));
+
+        AppendCommentResult result = api.appendComment(MoreExecutors.sameThreadExecutor(), 123456789L, "これコメント").get();
+        assertThat(result.getStatus(), is(200));
+        assertThat(result.isSuccess(), is(true));
+
+        assertThat(result.getResult().getStatus(), is("ok"));
+        assertThat(result.getResult().getError(), nullValue());
+    }
+
     private <T extends AbstractResult<ContentList>> void ページングコンテンツリストを取得できる(String path, Callable<Future<T>> apiCallable) throws Exception {
         List<NameValuePair> parameters = Lists.newArrayList();
         parameters.add(new BasicNameValuePair("api_key", "mock"));
