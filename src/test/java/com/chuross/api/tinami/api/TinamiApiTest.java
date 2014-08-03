@@ -449,6 +449,24 @@ public class TinamiApiTest extends HttpRequestTestCase {
         assertThat(result.getResult().getError(), nullValue());
     }
 
+    @Test
+    public void コメントを削除できる() throws Exception {
+        List<NameValuePair> parameters = Lists.newArrayList();
+        parameters.add(new BasicNameValuePair("api_key", "mock"));
+        parameters.add(new BasicNameValuePair("auth_key", "piyo"));
+        parameters.add(new BasicNameValuePair("comment_id", "123456789"));
+        RequestPattern pattern = new RequestPattern("/content/comment/remove", parameters, null);
+
+        addResponse(pattern, getResponse(200, "/testdata/response/success.xml"));
+
+        RemoveCommentResult result = api.removeComment(MoreExecutors.sameThreadExecutor(), 123456789L).get();
+        assertThat(result.getStatus(), is(200));
+        assertThat(result.isSuccess(), is(true));
+
+        assertThat(result.getResult().getStatus(), is("ok"));
+        assertThat(result.getResult().getError(), nullValue());
+    }
+
     private <T extends AbstractResult<ContentList>> void ページングコンテンツリストを取得できる(String path, Callable<Future<T>> apiCallable) throws Exception {
         List<NameValuePair> parameters = Lists.newArrayList();
         parameters.add(new BasicNameValuePair("api_key", "mock"));

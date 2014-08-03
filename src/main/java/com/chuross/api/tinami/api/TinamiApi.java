@@ -165,6 +165,15 @@ public class TinamiApi {
         });
     }
 
+    public Future<RemoveCommentResult> removeComment(Executor executor, final long commentId) {
+        return executeWithAuthentication(executor, new Callable<Api<RemoveCommentResult>>() {
+            @Override
+            public Api<RemoveCommentResult> call() throws Exception {
+                return new RemoveCommentApi(context, account.getAuthKey(), commentId);
+            }
+        });
+    }
+
     private <R extends AbstractAuthenticatedResult<?>> Future<R> executeWithAuthentication(Executor executor, final Callable<Api<R>> apiCallable) {
         return FutureUtils.executeOrNull(executor, new Callable<R>() {
             @Override
