@@ -154,42 +154,47 @@ public class TinamiApiTest extends HttpRequestTestCase {
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(true));
 
-        ContentList list = result.getResult();
-        assertThat(list.getStatus(), is("ok"));
-        assertThat(list.getError(), nullValue());
+        ContentList contentList = result.getResult();
+        assertThat(contentList.getStatus(), is("ok"));
+        assertThat(contentList.getError(), nullValue());
 
-        List<Content> contents = list.getContents();
-        assertThat(contents.size(), is(3));
+        Contents contents = contentList.getContents();
+        assertThat(contents.getTotal(), is(486402L));
+        assertThat(contents.getPage(), is(1));
+        assertThat(contents.getPages(), is(162134));
+        assertThat(contents.getPerpage(), is(3));
 
-        assertThat(contents.get(0).getId(), is(123456L));
-        assertThat(contents.get(0).getType(), is("illust"));
-        assertThat(contents.get(0).getTitle(), is("作品タイトル"));
-        assertThat(contents.get(0).getViewLevel(), is(ViewLevel.PUBLIC));
-        assertThat(contents.get(0).getAgeLevel(), is(1));
-        assertThat(contents.get(0).getThumbnails().size(), is(1));
-        assertThat(contents.get(0).getThumbnails().get(0).getUrl(), is("http://img.tinami.com/1.gif"));
-        assertThat(contents.get(0).getThumbnails().get(0).getWidth(), is(112));
-        assertThat(contents.get(0).getThumbnails().get(0).getHeight(), is(120));
+        List<Content> list = contents.getList();
+        assertThat(list.size(), is(3));
+        assertThat(list.get(0).getId(), is(123456L));
+        assertThat(list.get(0).getType(), is("illust"));
+        assertThat(list.get(0).getTitle(), is("作品タイトル"));
+        assertThat(list.get(0).getViewLevel(), is(ViewLevel.PUBLIC));
+        assertThat(list.get(0).getAgeLevel(), is(1));
+        assertThat(list.get(0).getThumbnails().size(), is(1));
+        assertThat(list.get(0).getThumbnails().get(0).getUrl(), is("http://img.tinami.com/1.gif"));
+        assertThat(list.get(0).getThumbnails().get(0).getWidth(), is(112));
+        assertThat(list.get(0).getThumbnails().get(0).getHeight(), is(120));
 
-        assertThat(contents.get(1).getId(), is(456789L));
-        assertThat(contents.get(1).getType(), is("illust"));
-        assertThat(contents.get(1).getTitle(), is("作品タイトル2"));
-        assertThat(contents.get(1).getViewLevel(), is(ViewLevel.USER));
-        assertThat(contents.get(1).getAgeLevel(), is(2));
-        assertThat(contents.get(1).getThumbnails().size(), is(1));
-        assertThat(contents.get(1).getThumbnails().get(0).getUrl(), is("http://img.tinami.com/2.gif"));
-        assertThat(contents.get(1).getThumbnails().get(0).getWidth(), is(112));
-        assertThat(contents.get(1).getThumbnails().get(0).getHeight(), is(120));
+        assertThat(list.get(1).getId(), is(456789L));
+        assertThat(list.get(1).getType(), is("illust"));
+        assertThat(list.get(1).getTitle(), is("作品タイトル2"));
+        assertThat(list.get(1).getViewLevel(), is(ViewLevel.USER));
+        assertThat(list.get(1).getAgeLevel(), is(2));
+        assertThat(list.get(1).getThumbnails().size(), is(1));
+        assertThat(list.get(1).getThumbnails().get(0).getUrl(), is("http://img.tinami.com/2.gif"));
+        assertThat(list.get(1).getThumbnails().get(0).getWidth(), is(112));
+        assertThat(list.get(1).getThumbnails().get(0).getHeight(), is(120));
 
-        assertThat(contents.get(2).getId(), is(101112L));
-        assertThat(contents.get(2).getType(), is("illust"));
-        assertThat(contents.get(2).getTitle(), is("作品タイトル3"));
-        assertThat(contents.get(2).getViewLevel(), is(ViewLevel.SUPPORTER));
-        assertThat(contents.get(2).getAgeLevel(), is(3));
-        assertThat(contents.get(2).getThumbnails().size(), is(1));
-        assertThat(contents.get(2).getThumbnails().get(0).getUrl(), is("http://img.tinami.com/3.gif"));
-        assertThat(contents.get(2).getThumbnails().get(0).getWidth(), is(112));
-        assertThat(contents.get(2).getThumbnails().get(0).getHeight(), is(120));
+        assertThat(list.get(2).getId(), is(101112L));
+        assertThat(list.get(2).getType(), is("illust"));
+        assertThat(list.get(2).getTitle(), is("作品タイトル3"));
+        assertThat(list.get(2).getViewLevel(), is(ViewLevel.SUPPORTER));
+        assertThat(list.get(2).getAgeLevel(), is(3));
+        assertThat(list.get(2).getThumbnails().size(), is(1));
+        assertThat(list.get(2).getThumbnails().get(0).getUrl(), is("http://img.tinami.com/3.gif"));
+        assertThat(list.get(2).getThumbnails().get(0).getWidth(), is(112));
+        assertThat(list.get(2).getThumbnails().get(0).getHeight(), is(120));
     }
 
     @Test
@@ -379,22 +384,27 @@ public class TinamiApiTest extends HttpRequestTestCase {
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(true));
 
-        ContentList list = result.getResult();
-        assertThat(list.getStatus(), is("ok"));
-        assertThat(list.getError(), nullValue());
+        ContentList contentList = result.getResult();
+        assertThat(contentList.getStatus(), is("ok"));
+        assertThat(contentList.getError(), nullValue());
 
-        List<Content> contents = list.getContents();
-        assertThat(contents.size(), is(1));
+        Contents contents = contentList.getContents();
+        assertThat(contents.getTotal(), is(1L));
+        assertThat(contents.getPage(), is(1));
+        assertThat(contents.getPages(), is(1));
+        assertThat(contents.getPerpage(), is(20));
 
-        assertThat(contents.get(0).getId(), is(123456L));
-        assertThat(contents.get(0).getType(), is("illust"));
-        assertThat(contents.get(0).getTitle(), is("作品タイトル"));
-        assertThat(contents.get(0).getViewLevel(), is(ViewLevel.PUBLIC));
-        assertThat(contents.get(0).getAgeLevel(), is(1));
-        assertThat(contents.get(0).getThumbnails().size(), is(1));
-        assertThat(contents.get(0).getThumbnails().get(0).getUrl(), is("http://img.tinami.com/1.gif"));
-        assertThat(contents.get(0).getThumbnails().get(0).getWidth(), is(112));
-        assertThat(contents.get(0).getThumbnails().get(0).getHeight(), is(120));
+        List<Content> list = contents.getList();
+        assertThat(list.size(), is(1));
+        assertThat(list.get(0).getId(), is(123456L));
+        assertThat(list.get(0).getType(), is("illust"));
+        assertThat(list.get(0).getTitle(), is("作品タイトル"));
+        assertThat(list.get(0).getViewLevel(), is(ViewLevel.PUBLIC));
+        assertThat(list.get(0).getAgeLevel(), is(1));
+        assertThat(list.get(0).getThumbnails().size(), is(1));
+        assertThat(list.get(0).getThumbnails().get(0).getUrl(), is("http://img.tinami.com/1.gif"));
+        assertThat(list.get(0).getThumbnails().get(0).getWidth(), is(112));
+        assertThat(list.get(0).getThumbnails().get(0).getHeight(), is(120));
     }
 
     private Response getResponse(int status, String filePath) throws Exception {
