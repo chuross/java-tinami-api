@@ -2,7 +2,7 @@ package com.chuross.api.tinami.parameter;
 
 public enum ContentType {
 
-    ILLUST(1), COMIC(2), MODEL(3), NOVEL(4), COSPLAY(5);
+    ALL(0), ILLUST(1), COMIC(2), MODEL(3), NOVEL(4), COSPLAY(5);
 
     private int code;
     private ContentType(int code) {

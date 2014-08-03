@@ -210,7 +210,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
     @Test
     public void お気に入りクリエイターの作品が取得できる() throws Exception {
-        コンテンツリストを取得できる("/bookmark/content/list", new Callable<Future<BookmarkContentsResult>>() {
+        ページングコンテンツリストを取得できる("/bookmark/content/list", new Callable<Future<BookmarkContentsResult>>() {
             @Override
             public Future<BookmarkContentsResult> call() throws Exception {
                 return api.bookmarkContents(MoreExecutors.sameThreadExecutor(), 1, 20, false);
@@ -275,7 +275,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
     @Test
     public void 友達が支援した作品を取得できる() throws Exception {
-        コンテンツリストを取得できる("/friend/recommend/content/list", new Callable<Future<FriendRecommendResult>>() {
+        ページングコンテンツリストを取得できる("/friend/recommend/content/list", new Callable<Future<FriendRecommendResult>>() {
             @Override
             public Future<FriendRecommendResult> call() throws Exception {
                 return api.friendRecommend(MoreExecutors.sameThreadExecutor(), 1, 20, false);
@@ -285,7 +285,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
     @Test
     public void ウォッチキーワードの作品を取得できる() throws Exception {
-        コンテンツリストを取得できる("/watchkeyword/content/list", new Callable<Future<WatchKeywordResult>>() {
+        ページングコンテンツリストを取得できる("/watchkeyword/content/list", new Callable<Future<WatchKeywordResult>>() {
             @Override
             public Future<WatchKeywordResult> call() throws Exception {
                 return api.watchKeyword(MoreExecutors.sameThreadExecutor(), 1, 20, false);
@@ -295,7 +295,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
     @Test
     public void コレクションを取得できる() throws Exception {
-        コンテンツリストを取得できる("/collection/list", new Callable<Future<CollectionResult>>() {
+        ページングコンテンツリストを取得できる("/collection/list", new Callable<Future<CollectionResult>>() {
             @Override
             public Future<CollectionResult> call() throws Exception {
                 return api.collections(MoreExecutors.sameThreadExecutor(), 1, 20, false);
@@ -324,13 +324,30 @@ public class TinamiApiTest extends HttpRequestTestCase {
         assertThat(responseElement.getStatus(), is("ok"));
     }
 
-    private <T extends AbstractResult<ContentList>> void コンテンツリストを取得できる(String path, Callable<Future<T>> apiCallable) throws Exception {
+    @Test
+    public void ランキングを取得できる() throws Exception {
+        List<NameValuePair> parameters = Lists.newArrayList();
+        parameters.add(new BasicNameValuePair("api_key", "mock"));
+        parameters.add(new BasicNameValuePair("category", "1"));
+        コンテンツリストを取得できる("/ranking", parameters, new Callable<Future<RankingResult>>() {
+            @Override
+            public Future<RankingResult> call() throws Exception {
+                return api.ranking(MoreExecutors.sameThreadExecutor(), com.chuross.api.tinami.parameter.ContentType.ILLUST);
+            }
+        });
+    }
+
+    private <T extends AbstractResult<ContentList>> void ページングコンテンツリストを取得できる(String path, Callable<Future<T>> apiCallable) throws Exception {
         List<NameValuePair> parameters = Lists.newArrayList();
         parameters.add(new BasicNameValuePair("api_key", "mock"));
         parameters.add(new BasicNameValuePair("auth_key", "piyo"));
         parameters.add(new BasicNameValuePair("page", "1"));
         parameters.add(new BasicNameValuePair("perpage", "20"));
         parameters.add(new BasicNameValuePair("safe", "0"));
+        コンテンツリストを取得できる(path, parameters, apiCallable);
+    }
+
+    private <T extends AbstractResult<ContentList>> void コンテンツリストを取得できる(String path, List<NameValuePair> parameters, Callable<Future<T>> apiCallable) throws Exception {
         RequestPattern pattern = new RequestPattern(path, parameters, null);
 
         String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/contentlist/success_single.xml"));
