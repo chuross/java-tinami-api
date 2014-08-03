@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rsp stat="ok">
+    <comments>
+        <comment id="123" authorname="ユーザー１" datecreate="2010-03-15 16:55">コメント１</comment>
+        <comment id="456" authorname="ユーザー２" datecreate="2010-03-14 12:03">コメント２</comment>
+        <comment id="789" authorname="ユーザー３" datecreate="2010-02-24 16:25">コメント３</comment>
+    </comments>
+</rsp>

@@ -11,7 +11,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
-public class CreatorInfoApi extends GetRequestApi<CreatorInfoResult> {
+class CreatorInfoApi extends GetRequestApi<CreatorInfoResult> {
 
     private long creatorId;
 

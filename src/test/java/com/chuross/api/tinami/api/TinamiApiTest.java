@@ -395,6 +395,41 @@ public class TinamiApiTest extends HttpRequestTestCase {
         assertThat(creator.isBookmarkAppended(), is(true));
     }
 
+    @Test
+    public void コメントを取得できる() throws Exception {
+        List<NameValuePair> parameters = Lists.newArrayList();
+        parameters.add(new BasicNameValuePair("api_key", "mock"));
+        parameters.add(new BasicNameValuePair("cont_id", "123456789"));
+        RequestPattern pattern = new RequestPattern("/content/comment/list", parameters, null);
+
+        addResponse(pattern, getResponse(200, "/testdata/comment_list/success.xml"));
+
+        CommentListResult result = api.comments(MoreExecutors.sameThreadExecutor(), 123456789L).get();
+        assertThat(result.getStatus(), is(200));
+        assertThat(result.isSuccess(), is(true));
+
+        CommentList list = result.getResult();
+        assertThat(list.getStatus(), is("ok"));
+        assertThat(list.getError(), nullValue());
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.JAPAN);
+
+        List<Comment> comments = list.getComments();
+        assertThat(comments.size(), is(3));
+        assertThat(comments.get(0).getId(), is(123L));
+        assertThat(comments.get(0).getUserName(), is("ユーザー１"));
+        assertThat(comments.get(0).getCreatedAt(), is(format.parse("2010-03-15 16:55")));
+        assertThat(comments.get(0).getBody(), is("コメント１"));
+        assertThat(comments.get(1).getId(), is(456L));
+        assertThat(comments.get(1).getUserName(), is("ユーザー２"));
+        assertThat(comments.get(1).getCreatedAt(), is(format.parse("2010-03-14 12:03")));
+        assertThat(comments.get(1).getBody(), is("コメント２"));
+        assertThat(comments.get(2).getId(), is(789L));
+        assertThat(comments.get(2).getUserName(), is("ユーザー３"));
+        assertThat(comments.get(2).getCreatedAt(), is(format.parse("2010-02-24 16:25")));
+        assertThat(comments.get(2).getBody(), is("コメント３"));
+    }
+
     private <T extends AbstractResult<ContentList>> void ページングコンテンツリストを取得できる(String path, Callable<Future<T>> apiCallable) throws Exception {
         List<NameValuePair> parameters = Lists.newArrayList();
         parameters.add(new BasicNameValuePair("api_key", "mock"));

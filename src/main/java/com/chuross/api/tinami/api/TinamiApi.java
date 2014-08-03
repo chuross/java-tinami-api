@@ -153,6 +153,10 @@ public class TinamiApi {
         });
     }
 
+    public Future<CommentListResult> comments(Executor executor, long contentId) {
+        return new CommentListApi(context, contentId).execute(executor, config, RETRY_COUNT);
+    }
+
     private <R extends AbstractAuthenticatedResult<?>> Future<R> executeWithAuthentication(Executor executor, final Callable<Api<R>> apiCallable) {
         return FutureUtils.executeOrNull(executor, new Callable<R>() {
             @Override
