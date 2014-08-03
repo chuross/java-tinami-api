@@ -13,21 +13,8 @@ public class CreatorList implements RootElement {
     @Attribute(name = "stat")
     private String status;
 
-//    @Attribute
-//    @Path("/rsp/contents/@total")
-//    public long total;
-//
-//    @Path("/rsp/contents/@page")
-//    private int page;
-//
-//    @Path("/rsp/contents/@pages")
-//    private int pages;
-//
-//    @Path("/rsp/contents/@perpage")
-//    private int perpage;
-
-    @ElementList(name = "creators")
-    List<Creator> creators;
+    @Element
+    private Creators creators;
 
     @Element(name = "err", required = false)
     private Error error;
@@ -37,7 +24,7 @@ public class CreatorList implements RootElement {
         return status;
     }
 
-    public List<Creator> getCreators() {
+    public Creators getCreators() {
         return creators;
     }
 

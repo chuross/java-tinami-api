@@ -222,20 +222,26 @@ public class TinamiApiTest extends HttpRequestTestCase {
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(true));
 
-        CreatorList list = result.getResult();
-        assertThat(list.getStatus(), is("ok"));
-        assertThat(list.getError(), nullValue());
+        CreatorList creatorList = result.getResult();
+        assertThat(creatorList.getStatus(), is("ok"));
+        assertThat(creatorList.getError(), nullValue());
 
-        List<Creator> creators = list.getCreators();
-        assertThat(creators.size(), is(2));
+        Creators creators = creatorList.getCreators();
+        assertThat(creators.getTotal(), is(2L));
+        assertThat(creators.getPage(), is(1));
+        assertThat(creators.getPages(), is(1));
+        assertThat(creators.getPerpage(), is(20));
 
-        assertThat(creators.get(0).getId(), is(51946L));
-        assertThat(creators.get(0).getName(), is("ラムネ"));
-        assertThat(creators.get(0).getThumbnailUrl(), is("http://img.tinami.com/supporter/profile/68/sp00272568_45b606019e24ab289a8d269140f0186a.png"));
+        List<Creator> list = creators.getList();
+        assertThat(list.size(), is(2));
 
-        assertThat(creators.get(1).getId(), is(10L));
-        assertThat(creators.get(1).getName(), is("TINAMIの中の人"));
-        assertThat(creators.get(1).getThumbnailUrl(), is("http://www.tinami.com/supporter/images/profile/sp00000010_dc8dfb2063d236fc1832223c5de23760.gif"));
+        assertThat(list.get(0).getId(), is(51946L));
+        assertThat(list.get(0).getName(), is("ラムネ"));
+        assertThat(list.get(0).getThumbnailUrl(), is("http://img.tinami.com/supporter/profile/68/sp00272568_45b606019e24ab289a8d269140f0186a.png"));
+
+        assertThat(list.get(1).getId(), is(10L));
+        assertThat(list.get(1).getName(), is("TINAMIの中の人"));
+        assertThat(list.get(1).getThumbnailUrl(), is("http://www.tinami.com/supporter/images/profile/sp00000010_dc8dfb2063d236fc1832223c5de23760.gif"));
     }
 
     @Test
