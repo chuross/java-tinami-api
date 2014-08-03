@@ -21,7 +21,9 @@ import org.apache.http.message.BasicNameValuePair;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
@@ -46,10 +48,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
         parameters.add(new BasicNameValuePair("password", "fuga"));
         RequestPattern pattern = new RequestPattern("/auth", parameters, null);
 
-        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/authentication/success.xml"));
-        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
-
-        addResponse(pattern, response);
+        addResponse(pattern, getResponse(200, "/testdata/authentication/success.xml"));
 
         AuthenticationResult result = api.login(MoreExecutors.sameThreadExecutor()).get();
         assertThat(result.getStatus(), is(200));
@@ -69,10 +68,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
         parameters.add(new BasicNameValuePair("password", "fuga"));
         RequestPattern pattern = new RequestPattern("/auth", parameters, null);
 
-        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/authentication/fail.xml"));
-        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
-
-        addResponse(pattern, response);
+        addResponse(pattern, getResponse(200, "/testdata/authentication/fail.xml"));
 
         AuthenticationResult result = api.login(MoreExecutors.sameThreadExecutor()).get();
         assertThat(result.getStatus(), is(200));
@@ -91,10 +87,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
         parameters.add(new BasicNameValuePair("auth_key", "piyo"));
         RequestPattern pattern = new RequestPattern("/logout", parameters, null);
 
-        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/response/success.xml"));
-        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
-
-        addResponse(pattern, response);
+        addResponse(pattern, getResponse(200, "/testdata/response/success.xml"));
 
         LogoutResult result = api.logout(MoreExecutors.sameThreadExecutor()).get();
         assertThat(result.getStatus(), is(200));
@@ -111,10 +104,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
         parameters.add(new BasicNameValuePair("auth_key", "piyo"));
         RequestPattern pattern = new RequestPattern("/login/info", parameters, null);
 
-        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/user_info/success_user.xml"));
-        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
-
-        addResponse(pattern, response);
+        addResponse(pattern, getResponse(200, "/testdata/user_info/success_user.xml"));
 
         UserInfoResult result = api.userInfo(MoreExecutors.sameThreadExecutor()).get();
         assertThat(result.getStatus(), is(200));
@@ -134,10 +124,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
         parameters.add(new BasicNameValuePair("auth_key", "piyo"));
         RequestPattern pattern = new RequestPattern("/login/info", parameters, null);
 
-        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/user_info/success_creator.xml"));
-        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
-
-        addResponse(pattern, response);
+        addResponse(pattern, getResponse(200, "/testdata/user_info/success_creator.xml"));
 
         UserInfoResult result = api.userInfo(MoreExecutors.sameThreadExecutor()).get();
         assertThat(result.getStatus(), is(200));
@@ -161,10 +148,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
         parameters.add(new BasicNameValuePair("perpage", "1"));
         RequestPattern pattern = new RequestPattern("/content/search", parameters, null);
 
-        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/contentlist/success_multi.xml"));
-        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
-
-        addResponse(pattern, response);
+        addResponse(pattern, getResponse(200, "/testdata/contentlist/success_multi.xml"));
 
         SearchResult result = api.search(MoreExecutors.sameThreadExecutor(), new SearchParameterBuilder().setText("keyword").build()).get();
         assertThat(result.getStatus(), is(200));
@@ -227,10 +211,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
         parameters.add(new BasicNameValuePair("perpage", "20"));
         RequestPattern pattern = new RequestPattern("/bookmark/list", parameters, null);
 
-        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/creatorlist/success_multi.xml"));
-        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
-
-        addResponse(pattern, response);
+        addResponse(pattern, getResponse(200, "/testdata/creatorlist/success_multi.xml"));
 
         BookmarkCreatorsResult result = api.bookmarkCreators(MoreExecutors.sameThreadExecutor(), 1, 20).get();
         assertThat(result.getStatus(), is(200));
@@ -260,10 +241,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
         parameters.add(new BasicNameValuePair("prof_id", "1234567890"));
         RequestPattern pattern = new RequestPattern("/bookmark/add", parameters, null);
 
-        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/response/success.xml"));
-        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
-
-        addResponse(pattern, response);
+        addResponse(pattern, getResponse(200, "/testdata/response/success.xml"));
 
         AppendBookmarkCreatorsResult result = api.appendBookmarkCreators(MoreExecutors.sameThreadExecutor(), 1234567890L).get();
         assertThat(result.getStatus(), is(200));
@@ -311,10 +289,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
         parameters.add(new BasicNameValuePair("cont_id", "1234567890"));
         RequestPattern pattern = new RequestPattern("/collection/add", parameters, null);
 
-        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/response/success.xml"));
-        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
-
-        addResponse(pattern, response);
+        addResponse(pattern, getResponse(200, "/testdata/response/success.xml"));
 
         AppendCollectionResult result = api.appendCollection(MoreExecutors.sameThreadExecutor(), 1234567890L).get();
         assertThat(result.getStatus(), is(200));
@@ -337,6 +312,54 @@ public class TinamiApiTest extends HttpRequestTestCase {
         });
     }
 
+    @Test
+    public void 作品情報を取得できる() throws Exception {
+        List<NameValuePair> parameters = Lists.newArrayList();
+        parameters.add(new BasicNameValuePair("api_key", "mock"));
+        parameters.add(new BasicNameValuePair("auth_key", "piyo"));
+        parameters.add(new BasicNameValuePair("cont_id", "123456789"));
+        parameters.add(new BasicNameValuePair("dates", "1"));
+        parameters.add(new BasicNameValuePair("models", "0"));
+        RequestPattern pattern = new RequestPattern("/content/info", parameters, null);
+
+        addResponse(pattern, getResponse(200, "/testdata/content_info/success.xml"));
+
+        ContentInfoResult result = api.contentInfo(MoreExecutors.sameThreadExecutor(), 123456789L).get();
+        assertThat(result.getStatus(), is(200));
+        assertThat(result.isSuccess(), is(true));
+
+        ContentInfo info = result.getResult();
+        assertThat(info.getStatus(), is("ok"));
+        assertThat(info.getError(), nullValue());
+
+        Content content = info.getContent();
+        assertThat(content.getType(), is("illust"));
+        assertThat(content.isSupported(), is(true));
+        assertThat(content.isCollectionAppended(), is(false));
+        assertThat(content.getTitle(), is("ある王国の物語"));
+        assertThat(content.getCreator().getId(), is(17527L));
+        assertThat(content.getCreator().getName(), is("文月椎野"));
+        assertThat(content.getCreator().getThumbnailUrl(), is("http://img.tinami.com/supporter/profile/33/sp00105233_924cc0b5abb9ab91e709707151291f1a.jpg"));
+        assertThat(content.getAgeLevel(), is(1));
+        assertThat(content.getDescription(), is("遠い遠い、誰も知らない王国のお姫様と、反乱を目論む騎士団に属する一人の青年のお話。"));
+        assertThat(content.getThumbnails().size(), is(1));
+        assertThat(content.getThumbnails().get(0).getUrl(), is("http://img.tinami.com/illust2/A/635/53dbc167d2f51.gif"));
+        assertThat(content.getThumbnails().get(0).getWidth(), is(106));
+        assertThat(content.getThumbnails().get(0).getHeight(), is(150));
+        assertThat(content.getImage().getUrl(), is("http://api.tinami.com/image?api_key=hoge&cont_id=705561"));
+        assertThat(content.getImage().getWidth(), is(707));
+        assertThat(content.getImage().getHeight(), is(1000));
+        assertThat(content.getTotalViewCount(), is(61));
+        assertThat(content.getUserViewCount(), is(60));
+        assertThat(content.getValuation(), is(0));
+        assertThat(content.getTags().size(), is(4));
+        assertThat(content.getTags().get(0), is("オリキャラ"));
+        assertThat(content.getTags().get(1), is("王国"));
+        assertThat(content.getTags().get(2), is("姫"));
+        assertThat(content.getTags().get(3), is("騎士"));
+        assertThat(content.getCreatedAt(), is(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.JAPAN).parse("2014-08-02 01:33:42")));
+    }
+
     private <T extends AbstractResult<ContentList>> void ページングコンテンツリストを取得できる(String path, Callable<Future<T>> apiCallable) throws Exception {
         List<NameValuePair> parameters = Lists.newArrayList();
         parameters.add(new BasicNameValuePair("api_key", "mock"));
@@ -350,10 +373,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
     private <T extends AbstractResult<ContentList>> void コンテンツリストを取得できる(String path, List<NameValuePair> parameters, Callable<Future<T>> apiCallable) throws Exception {
         RequestPattern pattern = new RequestPattern(path, parameters, null);
 
-        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/contentlist/success_single.xml"));
-        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
-
-        addResponse(pattern, response);
+        addResponse(pattern, getResponse(200, "/testdata/contentlist/success_single.xml"));
 
         T result = apiCallable.call().get();
         assertThat(result.getStatus(), is(200));
@@ -375,6 +395,11 @@ public class TinamiApiTest extends HttpRequestTestCase {
         assertThat(contents.get(0).getThumbnails().get(0).getUrl(), is("http://img.tinami.com/1.gif"));
         assertThat(contents.get(0).getThumbnails().get(0).getWidth(), is(112));
         assertThat(contents.get(0).getThumbnails().get(0).getHeight(), is(120));
+    }
+
+    private Response getResponse(int status, String filePath) throws Exception {
+        String body = IOUtils.toString(getClass().getResourceAsStream(filePath));
+        return new Response(status, body, ENCODING, CONTENT_TYPE, null);
     }
 
 }

@@ -11,7 +11,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
-public class AppendBookmarkCreatorsApi extends GetRequestApi<AppendBookmarkCreatorsResult> {
+class AppendBookmarkCreatorsApi extends GetRequestApi<AppendBookmarkCreatorsResult> {
 
     private long userId;
 

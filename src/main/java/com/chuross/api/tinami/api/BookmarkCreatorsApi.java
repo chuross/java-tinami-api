@@ -9,7 +9,7 @@ import org.apache.http.Header;
 
 import java.util.List;
 
-public class BookmarkCreatorsApi extends AbstractPagingApi<BookmarkCreatorsResult> {
+class BookmarkCreatorsApi extends AbstractPagingApi<BookmarkCreatorsResult> {
 
 
     public BookmarkCreatorsApi(Context context, String authKey, int page, int perpage) {

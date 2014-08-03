@@ -12,7 +12,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
-public class RankingApi extends GetRequestApi<RankingResult> {
+class RankingApi extends GetRequestApi<RankingResult> {
 
     private ContentType contentType;
 

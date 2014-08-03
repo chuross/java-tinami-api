@@ -4,6 +4,7 @@ import com.chuross.api.tinami.Account;
 import com.chuross.api.tinami.ApiContext;
 import com.chuross.api.tinami.Context;
 import com.chuross.api.tinami.OnLoginSessionExpiredListener;
+import com.chuross.api.tinami.element.ContentInfo;
 import com.chuross.api.tinami.parameter.ContentType;
 import com.chuross.api.tinami.parameter.SearchParameter;
 import com.chuross.api.tinami.result.*;
@@ -132,6 +133,15 @@ public class TinamiApi {
 
     public Future<RankingResult> ranking(Executor executor, ContentType contentType) {
         return new RankingApi(context, contentType).execute(executor, config, RETRY_COUNT);
+    }
+
+    public Future<ContentInfoResult> contentInfo(Executor executor, final long contentId) {
+        return executeWithAuthentication(executor, new Callable<Api<ContentInfoResult>>() {
+            @Override
+            public Api<ContentInfoResult> call() throws Exception {
+                return new ContentInfoApi(context, account.getAuthKey(), contentId);
+            }
+        });
     }
 
     private <R extends AbstractAuthenticatedResult<?>> Future<R> executeWithAuthentication(Executor executor, final Callable<Api<R>> apiCallable) {

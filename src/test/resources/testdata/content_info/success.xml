@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rsp stat="ok">
+    <content type="illust" issupport="1" iscollection="0">
+        <title>ある王国の物語</title>
+        <creator id="17527" isbookmark="1">
+            <name>文月椎野</name>
+            <thumbnail>http://img.tinami.com/supporter/profile/33/sp00105233_924cc0b5abb9ab91e709707151291f1a.jpg</thumbnail>
+        </creator>
+        <age_level>1</age_level>
+        <description>遠い遠い、誰も知らない王国のお姫様と、反乱を目論む騎士団に属する一人の青年のお話。</description>
+        <thumbnails>
+            <thumbnail_150x150 url="http://img.tinami.com/illust2/A/635/53dbc167d2f51.gif" width="106" height="150" />
+        </thumbnails>
+        <image>
+            <url>http://api.tinami.com/image?api_key=hoge&amp;cont_id=705561</url>
+            <width>707</width>
+            <height>1000</height>
+        </image>
+        <total_view>61</total_view>
+        <user_view>60</user_view>
+        <valuation>0</valuation>
+        <tags>
+            <tag>オリキャラ</tag>
+            <tag>王国</tag>
+            <tag>姫</tag>
+            <tag>騎士</tag>
+        </tags>
+        <dates posted="2014-08-02 01:33:42" />
+    </content>
+</rsp>

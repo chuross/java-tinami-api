@@ -7,7 +7,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
-public abstract class AbstractPagingContentListApi<T extends AbstractResult<?>> extends AbstractPagingApi<T> {
+abstract class AbstractPagingContentListApi<T extends AbstractResult<?>> extends AbstractPagingApi<T> {
 
     private boolean safe;
 

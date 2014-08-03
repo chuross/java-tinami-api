@@ -7,7 +7,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
-public abstract class AbstractPagingApi<T extends AbstractResult<?>> extends GetRequestApi<T> {
+abstract class AbstractPagingApi<T extends AbstractResult<?>> extends GetRequestApi<T> {
 
     private int page;
     private int perpage;
