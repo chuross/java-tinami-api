@@ -2,7 +2,7 @@ package com.chuross.api.tinami.api;
 
 import com.chuross.api.tinami.Context;
 import com.chuross.api.tinami.element.Response;
-import com.chuross.api.tinami.result.AppendCollectionResult;
+import com.chuross.api.tinami.result.AppendBookmarkCreatorsResult;
 import com.chuross.common.library.http.HttpResponse;
 import com.chuross.common.library.util.XmlUtils;
 import org.apache.http.Header;
@@ -11,18 +11,18 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
-public class AppendCollectionApi extends GetRequestApi<AppendCollectionResult> {
+public class AppendBookmarkCreatorsApi extends GetRequestApi<AppendBookmarkCreatorsResult> {
 
-    private long contentId;
+    private long userId;
 
-    public AppendCollectionApi(Context context, String authKey, long contentId) {
+    public AppendBookmarkCreatorsApi(Context context, String authKey, long userId) {
         super(context, authKey);
-        this.contentId = contentId;
+        this.userId = userId;
     }
 
     @Override
     protected String getUrl() {
-        return getContext().getUrl("/collection/add");
+        return getContext().getUrl("/bookmark/add");
     }
 
     @Override
@@ -32,12 +32,13 @@ public class AppendCollectionApi extends GetRequestApi<AppendCollectionResult> {
     @Override
     protected void setParameters(List<NameValuePair> nameValuePairs) {
         super.setParameters(nameValuePairs);
-        nameValuePairs.add(new BasicNameValuePair("cont_id", String.valueOf(contentId)));
+        nameValuePairs.add(new BasicNameValuePair("prof_id", String.valueOf(userId)));
     }
 
     @Override
-    protected AppendCollectionResult convert(HttpResponse response) throws Exception {
+    protected AppendBookmarkCreatorsResult convert(HttpResponse response) throws Exception {
         Response responseElement = XmlUtils.read(Response.class, response.getContentsAsString());
-        return new AppendCollectionResult(response.getStatus(), responseElement);
+        return new AppendBookmarkCreatorsResult(response.getStatus(), responseElement);
     }
+
 }

@@ -84,6 +84,15 @@ public class TinamiApi {
         });
     }
 
+    public Future<AppendBookmarkCreatorsResult> appendBookmarkCreators(Executor executor, final long userId) {
+        return executeWithAuthentication(executor, new Callable<Api<AppendBookmarkCreatorsResult>>() {
+            @Override
+            public Api<AppendBookmarkCreatorsResult> call() throws Exception {
+                return new AppendBookmarkCreatorsApi(context, account.getAuthKey(), userId);
+            }
+        });
+    }
+
     public Future<FriendRecommendResult> friendRecommend(Executor executor, final int page, final int perpage, final boolean safe) {
         return executeWithAuthentication(executor, new Callable<Api<FriendRecommendResult>>() {
             @Override

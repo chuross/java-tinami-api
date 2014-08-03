@@ -253,6 +253,27 @@ public class TinamiApiTest extends HttpRequestTestCase {
     }
 
     @Test
+    public void お気に入りクリエイターを追加できる() throws Exception {
+        List<NameValuePair> parameters = Lists.newArrayList();
+        parameters.add(new BasicNameValuePair("api_key", "mock"));
+        parameters.add(new BasicNameValuePair("auth_key", "piyo"));
+        parameters.add(new BasicNameValuePair("prof_id", "1234567890"));
+        RequestPattern pattern = new RequestPattern("/bookmark/add", parameters, null);
+
+        String body = IOUtils.toString(getClass().getResourceAsStream("/testdata/response/success.xml"));
+        Response response = new Response(200, body, ENCODING, CONTENT_TYPE, null);
+
+        addResponse(pattern, response);
+
+        AppendBookmarkCreatorsResult result = api.appendBookmarkCreators(MoreExecutors.sameThreadExecutor(), 1234567890L).get();
+        assertThat(result.getStatus(), is(200));
+        assertThat(result.isSuccess(), is(true));
+
+        com.chuross.api.tinami.element.Response responseElement = result.getResult();
+        assertThat(responseElement.getStatus(), is("ok"));
+    }
+
+    @Test
     public void 友達が支援した作品を取得できる() throws Exception {
         コンテンツリストを取得できる("/friend/recommend/content/list", new Callable<Future<FriendRecommendResult>>() {
             @Override
@@ -299,8 +320,8 @@ public class TinamiApiTest extends HttpRequestTestCase {
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(true));
 
-        com.chuross.api.tinami.element.Response logout = result.getResult();
-        assertThat(logout.getStatus(), is("ok"));
+        com.chuross.api.tinami.element.Response responseElement = result.getResult();
+        assertThat(responseElement.getStatus(), is("ok"));
     }
 
     private <T extends AbstractResult<ContentList>> void コンテンツリストを取得できる(String path, Callable<Future<T>> apiCallable) throws Exception {
