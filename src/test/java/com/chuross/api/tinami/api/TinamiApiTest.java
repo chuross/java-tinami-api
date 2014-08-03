@@ -73,7 +73,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
         AuthenticationResult result = api.login(MoreExecutors.sameThreadExecutor()).get();
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(false));
-        assertThat(result.isLoginFailed(), is(true));
+        assertThat(result.isInvalidAccountInfo(), is(true));
 
         Authentication authentication = result.getResult();
         assertThat(authentication.getStatus(), is("fail"));

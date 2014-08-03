@@ -11,7 +11,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
-public class AppendCommentApi extends GetRequestApi<AppendCommentResult> {
+class AppendCommentApi extends GetRequestApi<AppendCommentResult> {
 
     private long contentId;
     private String comment;

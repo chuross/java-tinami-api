@@ -7,10 +7,8 @@ import com.chuross.api.tinami.OnLoginSessionExpiredListener;
 import com.chuross.api.tinami.parameter.ContentType;
 import com.chuross.api.tinami.parameter.SearchParameter;
 import com.chuross.api.tinami.result.*;
-import com.chuross.common.library.api.Api;
-import com.chuross.common.library.util.FutureUtils;
-import com.chuross.common.library.util.MethodCallUtils;
-import com.google.common.util.concurrent.MoreExecutors;
+import com.chuross.api.tinami.result.AuthenticationResult;
+import com.chuross.common.library.api.*;
 import org.apache.http.client.config.RequestConfig;
 
 import java.util.concurrent.Callable;
@@ -18,7 +16,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-public class TinamiApi {
+public class TinamiApi extends Service<String> {
 
     private static final int TIME_OUT = (int) TimeUnit.SECONDS.toMillis(10);
     private static final int RETRY_COUNT = 3;
@@ -39,6 +37,11 @@ public class TinamiApi {
         this.context = context;
         this.account = account;
         this.config = config;
+    }
+
+    @Override
+    protected void onLoginSessionChanged(String newSession) {
+        account = new Account(account.getEmail(), account.getPassword(), newSession);
     }
 
     public Future<AuthenticationResult> login(Executor executor) {
@@ -175,43 +178,12 @@ public class TinamiApi {
     }
 
     private <R extends AbstractAuthenticatedResult<?>> Future<R> executeWithAuthentication(Executor executor, final Callable<Api<R>> apiCallable) {
-        return FutureUtils.executeOrNull(executor, new Callable<R>() {
+        return executeWithAuthentication(executor, config, RETRY_COUNT, apiCallable, new Callable<Api<AuthenticationResult>>() {
             @Override
-            public R call() throws Exception {
-                return executeWithAuthentication(apiCallable);
+            public Api<AuthenticationResult> call() throws Exception {
+                return new AuthenticationApi(context, account.getEmail(), account.getPassword());
             }
         });
-    }
-
-    private <R extends AbstractAuthenticatedResult<?>> R executeWithAuthentication(final Callable<Api<R>> apiCallable) {
-        Api<R> api = MethodCallUtils.callOrNull(apiCallable);
-        if(api == null) {
-            return null;
-        }
-        R result = FutureUtils.getOrNull(api.execute(MoreExecutors.sameThreadExecutor(), config, RETRY_COUNT));
-        if(result == null) {
-            return null;
-        }
-        if(!result.isExpiredAuthKey() && !result.isInvalidAuthKey()) {
-            return result;
-        }
-        AuthenticationResult authenticationResult = FutureUtils.getOrNull(login(MoreExecutors.sameThreadExecutor()));
-        if(authenticationResult.isLoginFailed() && listener != null) {
-            listener.onChangedAccountInfo();
-        }
-        if(!authenticationResult.isSuccess()) {
-            return null;
-        }
-        String newAuthKey = authenticationResult.getResult().getAuthKey();
-        if(listener != null) {
-            listener.onSessionChanged(newAuthKey);
-        }
-        account = new Account(account.getEmail(), account.getPassword(), newAuthKey);
-        return FutureUtils.getOrNull(MethodCallUtils.callOrNull(apiCallable).execute(MoreExecutors.sameThreadExecutor(), config, RETRY_COUNT));
-    }
-
-    public void setOnLoginSessionChangedListener(OnLoginSessionExpiredListener listener) {
-        this.listener = listener;
     }
 
 }

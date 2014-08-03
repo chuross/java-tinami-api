@@ -11,7 +11,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
-public class RemoveCommentApi extends GetRequestApi<RemoveCommentResult> {
+class RemoveCommentApi extends GetRequestApi<RemoveCommentResult> {
 
     private long commentId;
 

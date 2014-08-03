@@ -1,11 +1,17 @@
 package com.chuross.api.tinami.result;
 
 import com.chuross.api.tinami.element.RootElement;
+import com.chuross.common.library.api.AuthenticatedResult;
 
-public abstract class AbstractAuthenticatedResult<T extends RootElement> extends AbstractResult<T> {
+public abstract class AbstractAuthenticatedResult<T extends RootElement> extends AbstractResult<T> implements AuthenticatedResult<T> {
 
     public AbstractAuthenticatedResult(int status, T result) {
         super(status, result);
+    }
+
+    @Override
+    public boolean isExpiredLoginSession() {
+        return isExpiredAuthKey() || isInvalidAuthKey();
     }
 
     public boolean isExpiredAuthKey() {
