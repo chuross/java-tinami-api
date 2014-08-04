@@ -15,7 +15,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-public class TinamiApi extends Service<String> {
+public class TinamiApi extends AccountService<String> {
 
     private static final int TIME_OUT = (int) TimeUnit.SECONDS.toMillis(10);
     private static final int RETRY_COUNT = 3;
