@@ -1,15 +1,31 @@
 package com.chuross.api.tinami;
 
-public interface Context {
+public class Context {
 
-    public String getBaseUrl();
+    private String apiKey;
 
-    public String getSecureBaseUrl();
+    public Context(String apiKey) {
+        this.apiKey = apiKey;
+    }
 
-    public String getUrl(String path);
+    public String getBaseUrl() {
+        return "http://api.tinami.com";
+    }
 
-    public String getSecureUrl(String path);
+    public String getSecureBaseUrl() {
+        return "https://www.tinami.com/api";
+    }
 
-    public String getApiKey();
+    public String getUrl(String path) {
+        return String.format("%s/%s", getBaseUrl(), path.startsWith("/") ? path.substring(1) : path);
+    }
+
+    public String getSecureUrl(String path) {
+        return String.format("%s/%s", getSecureBaseUrl(), path.startsWith("/") ? path.substring(1) : path);
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
 
 }

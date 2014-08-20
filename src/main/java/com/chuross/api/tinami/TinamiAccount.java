@@ -1,16 +1,16 @@
 package com.chuross.api.tinami;
 
-public class Account {
+public class TinamiAccount {
 
     private String email;
     private String password;
     private String authKey;
 
-    public Account(String email, String password) {
+    public TinamiAccount(String email, String password) {
         this(email, password, null);
     }
 
-    public Account(String email, String password, String authKey) {
+    public TinamiAccount(String email, String password, String authKey) {
         this.email = email;
         this.password = password;
         this.authKey = authKey;

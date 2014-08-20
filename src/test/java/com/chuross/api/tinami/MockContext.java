@@ -1,17 +1,16 @@
 package com.chuross.api.tinami;
 
-public class MockContext extends AbstractContext {
+public class MockContext extends Context {
 
     private String url;
-    private String apiKey;
 
     public MockContext(String baseUrl) {
         this(baseUrl, null);
     }
 
     public MockContext(String baseUrl, String apiKey) {
+        super(apiKey);
         this.url = baseUrl;
-        this.apiKey = apiKey;
     }
 
     @Override
@@ -22,11 +21,6 @@ public class MockContext extends AbstractContext {
     @Override
     public String getSecureBaseUrl() {
         return url;
-    }
-
-    @Override
-    public String getApiKey() {
-        return apiKey;
     }
 
 }

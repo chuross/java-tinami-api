@@ -3,7 +3,7 @@ package com.chuross.api.tinami.api;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
-import com.chuross.api.tinami.Account;
+import com.chuross.api.tinami.TinamiAccount;
 import com.chuross.api.tinami.MockContext;
 import com.chuross.api.tinami.ViewLevel;
 import com.chuross.api.tinami.element.*;
@@ -33,7 +33,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
     private static final String CONTENT_TYPE = ContentType.APPLICATION_XML.getMimeType();
 
     private TinamiApi api;
-    private Account account = new Account("hoge", "fuga", "piyo");
+    private TinamiAccount account = new TinamiAccount("hoge", "fuga", "piyo");
 
     @Before
     public void before() {
@@ -106,7 +106,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
         addResponse(pattern, getResponse(200, "/testdata/user_info/success_user.xml"));
 
-        UserInfoResult result = api.userInfo(MoreExecutors.sameThreadExecutor()).get();
+        UserInfoResult result = api.getUserInfo(MoreExecutors.sameThreadExecutor()).get();
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(true));
 
@@ -126,7 +126,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
         addResponse(pattern, getResponse(200, "/testdata/user_info/success_creator.xml"));
 
-        UserInfoResult result = api.userInfo(MoreExecutors.sameThreadExecutor()).get();
+        UserInfoResult result = api.getUserInfo(MoreExecutors.sameThreadExecutor()).get();
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(true));
 
@@ -202,7 +202,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
         ページングコンテンツリストを取得できる("/bookmark/content/list", new Callable<Future<BookmarkContentsResult>>() {
             @Override
             public Future<BookmarkContentsResult> call() throws Exception {
-                return api.bookmarkContents(MoreExecutors.sameThreadExecutor(), 1, 20, false);
+                return api.getBookmarkContents(MoreExecutors.sameThreadExecutor(), 1, 20, false);
             }
         });
     }
@@ -218,7 +218,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
         addResponse(pattern, getResponse(200, "/testdata/creatorlist/success_multi.xml"));
 
-        BookmarkCreatorsResult result = api.bookmarkCreators(MoreExecutors.sameThreadExecutor(), 1, 20).get();
+        BookmarkCreatorsResult result = api.getBookmarkCreators(MoreExecutors.sameThreadExecutor(), 1, 20).get();
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(true));
 
@@ -254,7 +254,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
         addResponse(pattern, getResponse(200, "/testdata/response/success.xml"));
 
-        BookmarkCreatorsAddResult result = api.appendBookmarkCreators(MoreExecutors.sameThreadExecutor(), 1234567890L).get();
+        BookmarkCreatorsAddResult result = api.addBookmarkCreators(MoreExecutors.sameThreadExecutor(), 1234567890L).get();
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(true));
 
@@ -267,7 +267,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
         ページングコンテンツリストを取得できる("/friend/recommend/content/list", new Callable<Future<FriendRecommendResult>>() {
             @Override
             public Future<FriendRecommendResult> call() throws Exception {
-                return api.friendRecommend(MoreExecutors.sameThreadExecutor(), 1, 20, false);
+                return api.getFriendRecommend(MoreExecutors.sameThreadExecutor(), 1, 20, false);
             }
         });
     }
@@ -277,7 +277,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
         ページングコンテンツリストを取得できる("/watchkeyword/content/list", new Callable<Future<WatchKeywordResult>>() {
             @Override
             public Future<WatchKeywordResult> call() throws Exception {
-                return api.watchKeyword(MoreExecutors.sameThreadExecutor(), 1, 20, false);
+                return api.getWatchKeyword(MoreExecutors.sameThreadExecutor(), 1, 20, false);
             }
         });
     }
@@ -287,7 +287,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
         ページングコンテンツリストを取得できる("/collection/list", new Callable<Future<CollectionResult>>() {
             @Override
             public Future<CollectionResult> call() throws Exception {
-                return api.collections(MoreExecutors.sameThreadExecutor(), 1, 20, false);
+                return api.getCollections(MoreExecutors.sameThreadExecutor(), 1, 20, false);
             }
         });
     }
@@ -302,7 +302,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
         addResponse(pattern, getResponse(200, "/testdata/response/success.xml"));
 
-        CollectionAddResult result = api.appendCollection(MoreExecutors.sameThreadExecutor(), 1234567890L).get();
+        CollectionAddResult result = api.addCollection(MoreExecutors.sameThreadExecutor(), 1234567890L).get();
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(true));
 
@@ -318,7 +318,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
         コンテンツリストを取得できる("/ranking", parameters, new Callable<Future<RankingResult>>() {
             @Override
             public Future<RankingResult> call() throws Exception {
-                return api.ranking(MoreExecutors.sameThreadExecutor(), com.chuross.api.tinami.parameter.ContentType.ILLUST);
+                return api.getRanking(MoreExecutors.sameThreadExecutor(), com.chuross.api.tinami.parameter.ContentType.ILLUST);
             }
         });
     }
@@ -335,7 +335,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
         addResponse(pattern, getResponse(200, "/testdata/content_info/success.xml"));
 
-        ContentInfoResult result = api.contentInfo(MoreExecutors.sameThreadExecutor(), 123456789L).get();
+        ContentInfoResult result = api.getContentInfo(MoreExecutors.sameThreadExecutor(), 123456789L).get();
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(true));
 
@@ -381,7 +381,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
         addResponse(pattern, getResponse(200, "/testdata/creator_info/success.xml"));
 
-        CreatorInfoResult result = api.creatorInfo(MoreExecutors.sameThreadExecutor(), 123456789L).get();
+        CreatorInfoResult result = api.getCreatorInfo(MoreExecutors.sameThreadExecutor(), 123456789L).get();
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(true));
 
@@ -404,7 +404,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
         addResponse(pattern, getResponse(200, "/testdata/comment_list/success.xml"));
 
-        CommentListResult result = api.comments(MoreExecutors.sameThreadExecutor(), 123456789L).get();
+        CommentListResult result = api.getComments(MoreExecutors.sameThreadExecutor(), 123456789L).get();
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(true));
 
@@ -441,7 +441,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
         addResponse(pattern, getResponse(200, "/testdata/response/success.xml"));
 
-        CommentAddResult result = api.appendComment(MoreExecutors.sameThreadExecutor(), 123456789L, "これコメント").get();
+        CommentAddResult result = api.addComment(MoreExecutors.sameThreadExecutor(), 123456789L, "これコメント").get();
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(true));
 
