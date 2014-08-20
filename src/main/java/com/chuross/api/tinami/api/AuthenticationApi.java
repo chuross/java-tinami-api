@@ -10,7 +10,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
-class AuthenticationApi extends PostRequestApi<AuthenticationResult> {
+class AuthenticationApi extends PostApi<AuthenticationResult> {
 
     private String email;
     private String password;
@@ -36,6 +36,6 @@ class AuthenticationApi extends PostRequestApi<AuthenticationResult> {
     @Override
     protected AuthenticationResult convert(HttpResponse response) throws Exception {
         Authentication authentication = XmlUtils.read(Authentication.class, response.getContentsAsString(), false);
-        return new AuthenticationResult(response.getStatus(), authentication);
+        return new AuthenticationResult(response.getStatus(), response.getHeaders(), authentication);
     }
 }

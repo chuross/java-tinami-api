@@ -27,6 +27,6 @@ class BookmarkContentsApi extends AbstractPagingContentListApi<BookmarkContentsR
     @Override
     protected BookmarkContentsResult convert(HttpResponse response) throws Exception {
         ContentList list = XmlUtils.read(ContentList.class, response.getContentsAsString(), false);
-        return new BookmarkContentsResult(response.getStatus(), list);
+        return new BookmarkContentsResult(response.getStatus(), response.getHeaders(), list);
     }
 }

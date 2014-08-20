@@ -11,7 +11,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
-class CreatorInfoApi extends GetRequestApi<CreatorInfoResult> {
+class CreatorInfoApi extends GetApi<CreatorInfoResult> {
 
     private long creatorId;
 
@@ -38,7 +38,7 @@ class CreatorInfoApi extends GetRequestApi<CreatorInfoResult> {
     @Override
     protected CreatorInfoResult convert(HttpResponse response) throws Exception {
         CreatorInfo info = XmlUtils.read(CreatorInfo.class, response.getContentsAsString(), false);
-        return new CreatorInfoResult(response.getStatus(), info);
+        return new CreatorInfoResult(response.getStatus(), response.getHeaders(), info);
     }
 
 }

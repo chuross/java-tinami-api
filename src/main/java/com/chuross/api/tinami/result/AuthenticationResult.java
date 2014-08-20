@@ -2,11 +2,14 @@ package com.chuross.api.tinami.result;
 
 import com.chuross.api.tinami.element.*;
 import com.chuross.api.tinami.element.Error;
+import org.apache.http.Header;
 
-public class AuthenticationResult extends AbstractResult<Authentication> implements com.chuross.common.library.api.AuthenticationResult<String, Authentication> {
+import java.util.List;
 
-    public AuthenticationResult(int status, Authentication result) {
-        super(status, result);
+public class AuthenticationResult extends AbstractResult<Authentication> implements com.chuross.common.library.api.result.AuthenticationResult<String, Authentication> {
+
+    public AuthenticationResult(int status, List<Header> headers, Authentication result) {
+        super(status, headers, result);
     }
 
     @Override

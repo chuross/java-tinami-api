@@ -254,7 +254,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
         addResponse(pattern, getResponse(200, "/testdata/response/success.xml"));
 
-        AppendBookmarkCreatorsResult result = api.appendBookmarkCreators(MoreExecutors.sameThreadExecutor(), 1234567890L).get();
+        BookmarkCreatorsAddResult result = api.appendBookmarkCreators(MoreExecutors.sameThreadExecutor(), 1234567890L).get();
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(true));
 
@@ -302,7 +302,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
         addResponse(pattern, getResponse(200, "/testdata/response/success.xml"));
 
-        AppendCollectionResult result = api.appendCollection(MoreExecutors.sameThreadExecutor(), 1234567890L).get();
+        CollectionAddResult result = api.appendCollection(MoreExecutors.sameThreadExecutor(), 1234567890L).get();
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(true));
 
@@ -441,7 +441,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
         addResponse(pattern, getResponse(200, "/testdata/response/success.xml"));
 
-        AppendCommentResult result = api.appendComment(MoreExecutors.sameThreadExecutor(), 123456789L, "これコメント").get();
+        CommentAddResult result = api.appendComment(MoreExecutors.sameThreadExecutor(), 123456789L, "これコメント").get();
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(true));
 
@@ -459,7 +459,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
         addResponse(pattern, getResponse(200, "/testdata/response/success.xml"));
 
-        RemoveCommentResult result = api.removeComment(MoreExecutors.sameThreadExecutor(), 123456789L).get();
+        CommentRemoveResult result = api.removeComment(MoreExecutors.sameThreadExecutor(), 123456789L).get();
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(true));
 

@@ -9,7 +9,7 @@ import org.apache.http.Header;
 
 import java.util.List;
 
-class UserInfoApi extends GetRequestApi<UserInfoResult> {
+class UserInfoApi extends GetApi<UserInfoResult> {
 
     public UserInfoApi(Context context, String authKey) {
         super(context, authKey);
@@ -27,7 +27,7 @@ class UserInfoApi extends GetRequestApi<UserInfoResult> {
     @Override
     protected UserInfoResult convert(HttpResponse response) throws Exception {
         UserInfo info = XmlUtils.read(UserInfo.class, response.getContentsAsString(), false);
-        return new UserInfoResult(response.getStatus(), info);
+        return new UserInfoResult(response.getStatus(), response.getHeaders(), info);
     }
 
 }

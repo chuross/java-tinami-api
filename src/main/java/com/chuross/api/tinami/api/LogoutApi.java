@@ -9,7 +9,7 @@ import org.apache.http.Header;
 
 import java.util.List;
 
-class LogoutApi extends GetRequestApi<LogoutResult> {
+class LogoutApi extends GetApi<LogoutResult> {
 
     public LogoutApi(Context context, String authKey) {
         super(context, authKey);
@@ -27,6 +27,6 @@ class LogoutApi extends GetRequestApi<LogoutResult> {
     @Override
     protected LogoutResult convert(HttpResponse response) throws Exception {
         Response responseElement = XmlUtils.read(Response.class, response.getContentsAsString(), false);
-        return new LogoutResult(response.getStatus(), responseElement);
+        return new LogoutResult(response.getStatus(), response.getHeaders(), responseElement);
     }
 }

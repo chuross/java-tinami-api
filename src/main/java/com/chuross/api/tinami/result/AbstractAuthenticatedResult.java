@@ -1,12 +1,15 @@
 package com.chuross.api.tinami.result;
 
 import com.chuross.api.tinami.element.RootElement;
-import com.chuross.common.library.api.AuthenticatedResult;
+import com.chuross.common.library.api.result.AuthenticatedResult;
+import org.apache.http.Header;
+
+import java.util.List;
 
 public abstract class AbstractAuthenticatedResult<T extends RootElement> extends AbstractResult<T> implements AuthenticatedResult<T> {
 
-    public AbstractAuthenticatedResult(int status, T result) {
-        super(status, result);
+    public AbstractAuthenticatedResult(int status, List<Header> headers, T result) {
+        super(status, headers, result);
     }
 
     @Override

@@ -1,11 +1,14 @@
 package com.chuross.api.tinami.result;
 
 import com.chuross.api.tinami.element.ContentList;
+import org.apache.http.Header;
 
-public class SearchResult extends AbstractAuthenticatedResult<ContentList> {
+import java.util.List;
 
-    public SearchResult(int status, ContentList result) {
-        super(status, result);
+public class SearchResult extends AbstractResult<ContentList> {
+
+    public SearchResult(int status, List<Header> headers, ContentList result) {
+        super(status, headers, result);
     }
 
 }

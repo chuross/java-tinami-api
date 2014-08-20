@@ -2,7 +2,7 @@ package com.chuross.api.tinami.api;
 
 import com.chuross.api.tinami.Context;
 import com.chuross.api.tinami.element.Response;
-import com.chuross.api.tinami.result.RemoveCommentResult;
+import com.chuross.api.tinami.result.CommentRemoveResult;
 import com.chuross.common.library.http.HttpResponse;
 import com.chuross.common.library.util.XmlUtils;
 import org.apache.http.Header;
@@ -11,7 +11,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
-class RemoveCommentApi extends GetRequestApi<RemoveCommentResult> {
+class RemoveCommentApi extends GetApi<CommentRemoveResult> {
 
     private long commentId;
 
@@ -36,9 +36,9 @@ class RemoveCommentApi extends GetRequestApi<RemoveCommentResult> {
     }
 
     @Override
-    protected RemoveCommentResult convert(HttpResponse response) throws Exception {
+    protected CommentRemoveResult convert(HttpResponse response) throws Exception {
         Response responseElement = XmlUtils.read(Response.class, response.getContentsAsString(), false);
-        return new RemoveCommentResult(response.getStatus(), responseElement);
+        return new CommentRemoveResult(response.getStatus(), response.getHeaders(), responseElement);
     }
 
 }

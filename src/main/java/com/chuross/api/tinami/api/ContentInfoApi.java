@@ -11,7 +11,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
-class ContentInfoApi extends GetRequestApi<ContentInfoResult> {
+class ContentInfoApi extends GetApi<ContentInfoResult> {
 
     private long contentId;
 
@@ -40,7 +40,7 @@ class ContentInfoApi extends GetRequestApi<ContentInfoResult> {
     @Override
     protected ContentInfoResult convert(HttpResponse response) throws Exception {
         ContentInfo info = XmlUtils.read(ContentInfo.class, response.getContentsAsString(), false);
-        return new ContentInfoResult(response.getStatus(), info);
+        return new ContentInfoResult(response.getStatus(), response.getHeaders(), info);
     }
 
 }

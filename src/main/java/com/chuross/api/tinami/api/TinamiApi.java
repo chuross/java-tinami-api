@@ -15,7 +15,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-public class TinamiApi extends AccountService<String> {
+public class TinamiApi extends AccountService<String, AuthenticationResult> {
 
     private static final int TIME_OUT = (int) TimeUnit.SECONDS.toMillis(10);
     private static final int RETRY_COUNT = 3;
@@ -42,6 +42,16 @@ public class TinamiApi extends AccountService<String> {
         account = new Account(account.getEmail(), account.getPassword(), newSession);
     }
 
+    @Override
+    protected Callable<Api<AuthenticationResult>> getAuthenticationApiCallable() {
+        return new Callable<Api<AuthenticationResult>>() {
+            @Override
+            public Api<AuthenticationResult> call() throws Exception {
+                return new AuthenticationApi(context, account.getEmail(), account.getPassword());
+            }
+        };
+    }
+
     public Future<AuthenticationResult> login(Executor executor) {
         return new AuthenticationApi(context, account.getEmail(), account.getPassword()).execute(executor, config, RETRY_COUNT);
     }
@@ -51,7 +61,7 @@ public class TinamiApi extends AccountService<String> {
     }
 
     public Future<UserInfoResult> userInfo(Executor executor) {
-        return executeWithAuthentication(executor, new Callable<Api<UserInfoResult>>() {
+        return executeWithAuthentication(executor, config, RETRY_COUNT, new Callable<Api<UserInfoResult>>() {
             @Override
             public Api<UserInfoResult> call() throws Exception {
                 return new UserInfoApi(context, account.getAuthKey());
@@ -60,16 +70,11 @@ public class TinamiApi extends AccountService<String> {
     }
 
     public Future<SearchResult> search(final Executor executor, final SearchParameter searchParameter) {
-        return executeWithAuthentication(executor, new Callable<Api<SearchResult>>() {
-            @Override
-            public Api<SearchResult> call() throws Exception {
-                return new SearchApi(context, account.getAuthKey(), searchParameter);
-            }
-        });
+        return new SearchApi(context, account.getAuthKey(), searchParameter).execute(executor, config, RETRY_COUNT);
     }
 
     public Future<BookmarkContentsResult> bookmarkContents(Executor executor, final int page, final int perpage, final boolean safe) {
-        return executeWithAuthentication(executor, new Callable<Api<BookmarkContentsResult>>() {
+        return executeWithAuthentication(executor, config, RETRY_COUNT, new Callable<Api<BookmarkContentsResult>>() {
             @Override
             public Api<BookmarkContentsResult> call() throws Exception {
                 return new BookmarkContentsApi(context, account.getAuthKey(), page, perpage, safe);
@@ -78,7 +83,7 @@ public class TinamiApi extends AccountService<String> {
     }
 
     public Future<BookmarkCreatorsResult> bookmarkCreators(Executor executor, final int page, final int perpage) {
-        return executeWithAuthentication(executor, new Callable<Api<BookmarkCreatorsResult>>() {
+        return executeWithAuthentication(executor, config, RETRY_COUNT, new Callable<Api<BookmarkCreatorsResult>>() {
             @Override
             public Api<BookmarkCreatorsResult> call() throws Exception {
                 return new BookmarkCreatorsApi(context, account.getAuthKey(), page, perpage);
@@ -86,17 +91,17 @@ public class TinamiApi extends AccountService<String> {
         });
     }
 
-    public Future<AppendBookmarkCreatorsResult> appendBookmarkCreators(Executor executor, final long userId) {
-        return executeWithAuthentication(executor, new Callable<Api<AppendBookmarkCreatorsResult>>() {
+    public Future<BookmarkCreatorsAddResult> appendBookmarkCreators(Executor executor, final long userId) {
+        return executeWithAuthentication(executor, config, RETRY_COUNT, new Callable<Api<BookmarkCreatorsAddResult>>() {
             @Override
-            public Api<AppendBookmarkCreatorsResult> call() throws Exception {
-                return new AppendBookmarkCreatorsApi(context, account.getAuthKey(), userId);
+            public Api<BookmarkCreatorsAddResult> call() throws Exception {
+                return new BookmarkCreatorsAddApi(context, account.getAuthKey(), userId);
             }
         });
     }
 
     public Future<FriendRecommendResult> friendRecommend(Executor executor, final int page, final int perpage, final boolean safe) {
-        return executeWithAuthentication(executor, new Callable<Api<FriendRecommendResult>>() {
+        return executeWithAuthentication(executor, config, RETRY_COUNT, new Callable<Api<FriendRecommendResult>>() {
             @Override
             public Api<FriendRecommendResult> call() throws Exception {
                 return new FriendRecommendApi(context, account.getAuthKey(), page, perpage, safe);
@@ -105,7 +110,7 @@ public class TinamiApi extends AccountService<String> {
     }
 
     public Future<WatchKeywordResult> watchKeyword(Executor executor, final int page, final int perpage, final boolean safe) {
-        return executeWithAuthentication(executor, new Callable<Api<WatchKeywordResult>>() {
+        return executeWithAuthentication(executor, config, RETRY_COUNT, new Callable<Api<WatchKeywordResult>>() {
             @Override
             public Api<WatchKeywordResult> call() throws Exception {
                 return new WatchKeywordApi(context, account.getAuthKey(), page, perpage, safe);
@@ -114,7 +119,7 @@ public class TinamiApi extends AccountService<String> {
     }
 
     public Future<CollectionResult> collections(Executor executor, final int page, final int perpage, final boolean safe) {
-        return executeWithAuthentication(executor, new Callable<Api<CollectionResult>>() {
+        return executeWithAuthentication(executor, config, RETRY_COUNT, new Callable<Api<CollectionResult>>() {
             @Override
             public Api<CollectionResult> call() throws Exception {
                 return new CollectionApi(context, account.getAuthKey(), page, perpage, safe);
@@ -122,11 +127,11 @@ public class TinamiApi extends AccountService<String> {
         });
     }
 
-    public Future<AppendCollectionResult> appendCollection(Executor executor, final long contentId) {
-        return executeWithAuthentication(executor, new Callable<Api<AppendCollectionResult>>() {
+    public Future<CollectionAddResult> appendCollection(Executor executor, final long contentId) {
+        return executeWithAuthentication(executor, config, RETRY_COUNT, new Callable<Api<CollectionAddResult>>() {
             @Override
-            public Api<AppendCollectionResult> call() throws Exception {
-                return new AppendCollectionApi(context, account.getAuthKey(), contentId);
+            public Api<CollectionAddResult> call() throws Exception {
+                return new CollectionAddApi(context, account.getAuthKey(), contentId);
             }
         });
     }
@@ -136,7 +141,7 @@ public class TinamiApi extends AccountService<String> {
     }
 
     public Future<ContentInfoResult> contentInfo(Executor executor, final long contentId) {
-        return executeWithAuthentication(executor, new Callable<Api<ContentInfoResult>>() {
+        return executeWithAuthentication(executor, config, RETRY_COUNT, new Callable<Api<ContentInfoResult>>() {
             @Override
             public Api<ContentInfoResult> call() throws Exception {
                 return new ContentInfoApi(context, account.getAuthKey(), contentId);
@@ -145,7 +150,7 @@ public class TinamiApi extends AccountService<String> {
     }
 
     public Future<CreatorInfoResult> creatorInfo(Executor executor, final long creatorId) {
-        return executeWithAuthentication(executor, new Callable<Api<CreatorInfoResult>>() {
+        return executeWithAuthentication(executor, config, RETRY_COUNT, new Callable<Api<CreatorInfoResult>>() {
             @Override
             public Api<CreatorInfoResult> call() throws Exception {
                 return new CreatorInfoApi(context, account.getAuthKey(), creatorId);
@@ -157,29 +162,20 @@ public class TinamiApi extends AccountService<String> {
         return new CommentsApi(context, contentId).execute(executor, config, RETRY_COUNT);
     }
 
-    public Future<AppendCommentResult> appendComment(Executor executor, final long contentId, final String comment) {
-        return executeWithAuthentication(executor, new Callable<Api<AppendCommentResult>>() {
+    public Future<CommentAddResult> appendComment(Executor executor, final long contentId, final String comment) {
+        return executeWithAuthentication(executor, config, RETRY_COUNT, new Callable<Api<CommentAddResult>>() {
             @Override
-            public Api<AppendCommentResult> call() throws Exception {
-                return new AppendCommentApi(context, account.getAuthKey(), contentId, comment);
+            public Api<CommentAddResult> call() throws Exception {
+                return new CommentAddApi(context, account.getAuthKey(), contentId, comment);
             }
         });
     }
 
-    public Future<RemoveCommentResult> removeComment(Executor executor, final long commentId) {
-        return executeWithAuthentication(executor, new Callable<Api<RemoveCommentResult>>() {
+    public Future<CommentRemoveResult> removeComment(Executor executor, final long commentId) {
+        return executeWithAuthentication(executor, config, RETRY_COUNT, new Callable<Api<CommentRemoveResult>>() {
             @Override
-            public Api<RemoveCommentResult> call() throws Exception {
+            public Api<CommentRemoveResult> call() throws Exception {
                 return new RemoveCommentApi(context, account.getAuthKey(), commentId);
-            }
-        });
-    }
-
-    private <R extends AbstractAuthenticatedResult<?>> Future<R> executeWithAuthentication(Executor executor, final Callable<Api<R>> apiCallable) {
-        return executeWithAuthentication(executor, config, RETRY_COUNT, apiCallable, new Callable<Api<AuthenticationResult>>() {
-            @Override
-            public Api<AuthenticationResult> call() throws Exception {
-                return new AuthenticationApi(context, account.getEmail(), account.getPassword());
             }
         });
     }

@@ -11,7 +11,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
-class CommentsApi extends GetRequestApi<CommentListResult> {
+class CommentsApi extends GetApi<CommentListResult> {
 
     private long contentId;
 
@@ -38,7 +38,7 @@ class CommentsApi extends GetRequestApi<CommentListResult> {
     @Override
     protected CommentListResult convert(HttpResponse response) throws Exception {
         CommentList list = XmlUtils.read(CommentList.class, response.getContentsAsString(), false);
-        return new CommentListResult(response.getStatus(), list);
+        return new CommentListResult(response.getStatus(), response.getHeaders(), list);
     }
 
 }

@@ -8,16 +8,16 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
-abstract class GetRequestApi<T extends AbstractResult<?>> extends com.chuross.common.library.api.GetRequestApi<T> {
+abstract class GetApi<T extends AbstractResult<?>> extends com.chuross.common.library.api.GetApi<T> {
 
     private Context context;
     private String authKey;
 
-    public GetRequestApi(Context context) {
+    public GetApi(Context context) {
         this(context, null);
     }
 
-    public GetRequestApi(Context context, String authKey) {
+    public GetApi(Context context, String authKey) {
         this.context = context;
         this.authKey = authKey;
     }

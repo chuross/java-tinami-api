@@ -2,7 +2,7 @@ package com.chuross.api.tinami.api;
 
 import com.chuross.api.tinami.Context;
 import com.chuross.api.tinami.element.Response;
-import com.chuross.api.tinami.result.AppendCommentResult;
+import com.chuross.api.tinami.result.BookmarkCreatorsAddResult;
 import com.chuross.common.library.http.HttpResponse;
 import com.chuross.common.library.util.XmlUtils;
 import org.apache.http.Header;
@@ -11,20 +11,18 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
-class AppendCommentApi extends GetRequestApi<AppendCommentResult> {
+class BookmarkCreatorsAddApi extends GetApi<BookmarkCreatorsAddResult> {
 
-    private long contentId;
-    private String comment;
+    private long userId;
 
-    public AppendCommentApi(Context context, String authKey, long contentId, String comment) {
+    public BookmarkCreatorsAddApi(Context context, String authKey, long userId) {
         super(context, authKey);
-        this.contentId = contentId;
-        this.comment = comment;
+        this.userId = userId;
     }
 
     @Override
     protected String getUrl() {
-        return getContext().getUrl("/content/comment/add");
+        return getContext().getUrl("/bookmark/add");
     }
 
     @Override
@@ -34,13 +32,13 @@ class AppendCommentApi extends GetRequestApi<AppendCommentResult> {
     @Override
     protected void setParameters(List<NameValuePair> nameValuePairs) {
         super.setParameters(nameValuePairs);
-        nameValuePairs.add(new BasicNameValuePair("cont_id", String.valueOf(contentId)));
-        nameValuePairs.add(new BasicNameValuePair("comment", comment));
+        nameValuePairs.add(new BasicNameValuePair("prof_id", String.valueOf(userId)));
     }
 
     @Override
-    protected AppendCommentResult convert(HttpResponse response) throws Exception {
+    protected BookmarkCreatorsAddResult convert(HttpResponse response) throws Exception {
         Response responseElement = XmlUtils.read(Response.class, response.getContentsAsString(), false);
-        return new AppendCommentResult(response.getStatus(), responseElement);
+        return new BookmarkCreatorsAddResult(response.getStatus(), response.getHeaders(), responseElement);
     }
+
 }

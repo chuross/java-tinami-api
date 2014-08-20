@@ -5,9 +5,9 @@ import org.apache.http.Header;
 
 import java.util.List;
 
-public class LogoutResult extends AbstractResult<Response> {
+public class BookmarkCreatorsAddResult extends AbstractAuthenticatedResult<Response> {
 
-    public LogoutResult(int status, List<Header> headers, Response result) {
+    public BookmarkCreatorsAddResult(int status, List<Header> headers, Response result) {
         super(status, headers, result);
     }
 

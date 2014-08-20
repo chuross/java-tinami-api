@@ -11,7 +11,7 @@ import org.apache.http.NameValuePair;
 
 import java.util.List;
 
-class SearchApi extends GetRequestApi<SearchResult> {
+class SearchApi extends GetApi<SearchResult> {
 
     private SearchParameter searchParameters;
 
@@ -38,7 +38,7 @@ class SearchApi extends GetRequestApi<SearchResult> {
     @Override
     protected SearchResult convert(HttpResponse response) throws Exception {
         ContentList list = XmlUtils.read(ContentList.class, response.getContentsAsString(), false);
-        return new SearchResult(response.getStatus(), list);
+        return new SearchResult(response.getStatus(), response.getHeaders(), list);
     }
 
 }

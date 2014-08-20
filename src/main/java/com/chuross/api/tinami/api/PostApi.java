@@ -8,16 +8,16 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
-abstract class PostRequestApi<T extends AbstractResult<?>> extends com.chuross.common.library.api.PostRequestApi<T> {
+abstract class PostApi<T extends AbstractResult<?>> extends com.chuross.common.library.api.PostApi<T> {
 
     private Context context;
     private String authKey;
 
-    public PostRequestApi(Context context) {
+    public PostApi(Context context) {
         this(context, null);
     }
 
-    public PostRequestApi(Context context, String authKey) {
+    public PostApi(Context context, String authKey) {
         this.context = context;
         this.authKey = authKey;
     }

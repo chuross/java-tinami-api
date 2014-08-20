@@ -28,7 +28,7 @@ class BookmarkCreatorsApi extends AbstractPagingApi<BookmarkCreatorsResult> {
     @Override
     protected BookmarkCreatorsResult convert(HttpResponse response) throws Exception {
         CreatorList creatorList = XmlUtils.read(CreatorList.class, response.getContentsAsString(), false);
-        return new BookmarkCreatorsResult(response.getStatus(), creatorList);
+        return new BookmarkCreatorsResult(response.getStatus(), response.getHeaders(), creatorList);
     }
 
 }
