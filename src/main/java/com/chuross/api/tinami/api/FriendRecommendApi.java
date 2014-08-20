@@ -6,13 +6,18 @@ import com.chuross.api.tinami.result.FriendRecommendResult;
 import com.chuross.common.library.http.HttpResponse;
 import com.chuross.common.library.util.XmlUtils;
 import org.apache.http.Header;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
-class FriendRecommendApi extends AbstractPagingContentListApi<FriendRecommendResult> {
+class FriendRecommendApi extends AbstractPagingApi<FriendRecommendResult> {
+
+    private boolean safe;
 
     public FriendRecommendApi(Context context, String authKey, int page, int perpage, boolean safe) {
-        super(context, authKey, page, perpage, safe);
+        super(context, authKey, page, perpage);
+        this.safe = safe;
     }
 
     @Override
@@ -22,6 +27,12 @@ class FriendRecommendApi extends AbstractPagingContentListApi<FriendRecommendRes
 
     @Override
     protected void setRequestHeaders(List<Header> headers) {
+    }
+
+    @Override
+    protected void setParameters(List<NameValuePair> nameValuePairs) {
+        super.setParameters(nameValuePairs);
+        nameValuePairs.add(new BasicNameValuePair("safe", safe ? "1" : "0"));
     }
 
     @Override
