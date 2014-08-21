@@ -4,15 +4,11 @@ import com.chuross.api.tinami.ViewLevel;
 import com.chuross.common.library.util.MethodCallUtils;
 import org.simpleframework.xml.*;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.Callable;
 
 public class Content {
-
-    private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.JAPAN);
 
     @Attribute(required = false)
     private long id;
@@ -61,7 +57,7 @@ public class Content {
 
     @Attribute(name = "posted", required = false)
     @Path("dates")
-    private String createdAt;
+    private Date createdAt;
 
     public long getId() {
         return id;
@@ -124,12 +120,7 @@ public class Content {
     }
 
     public Date getCreatedAt() {
-        return MethodCallUtils.callOrNull(new Callable<Date>() {
-            @Override
-            public Date call() throws Exception {
-                return FORMAT.parse(createdAt);
-            }
-        });
+        return createdAt;
     }
 
 }
