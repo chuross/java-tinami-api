@@ -157,7 +157,7 @@ public class TinamiApi extends AccountService<String, AuthenticationResult> {
         });
     }
 
-    public Future<CommentListResult> getComments(Executor executor, long contentId) {
+    public Future<CommentsResult> getComments(Executor executor, long contentId) {
         return new CommentsApi(context, contentId).execute(executor, config, RETRY_COUNT);
     }
 

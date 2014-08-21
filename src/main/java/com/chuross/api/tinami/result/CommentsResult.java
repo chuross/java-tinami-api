@@ -5,9 +5,9 @@ import org.apache.http.Header;
 
 import java.util.List;
 
-public class CommentListResult extends AbstractResult<CommentList> {
+public class CommentsResult extends AbstractResult<CommentList> {
 
-    public CommentListResult(int status, List<Header> headers, CommentList result) {
+    public CommentsResult(int status, List<Header> headers, CommentList result) {
         super(status, headers, result);
     }
 

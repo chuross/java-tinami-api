@@ -404,7 +404,7 @@ public class TinamiApiTest extends HttpRequestTestCase {
 
         addResponse(pattern, getResponse(200, "/testdata/comment_list/success.xml"));
 
-        CommentListResult result = api.getComments(MoreExecutors.sameThreadExecutor(), 123456789L).get();
+        CommentsResult result = api.getComments(MoreExecutors.sameThreadExecutor(), 123456789L).get();
         assertThat(result.getStatus(), is(200));
         assertThat(result.isSuccess(), is(true));
 

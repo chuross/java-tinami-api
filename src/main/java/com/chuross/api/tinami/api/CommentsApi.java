@@ -2,7 +2,7 @@ package com.chuross.api.tinami.api;
 
 import com.chuross.api.tinami.Context;
 import com.chuross.api.tinami.element.CommentList;
-import com.chuross.api.tinami.result.CommentListResult;
+import com.chuross.api.tinami.result.CommentsResult;
 import com.chuross.common.library.http.HttpResponse;
 import com.chuross.common.library.util.XmlUtils;
 import org.apache.http.Header;
@@ -11,7 +11,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
-class CommentsApi extends GetApi<CommentListResult> {
+class CommentsApi extends GetApi<CommentsResult> {
 
     private long contentId;
 
@@ -36,9 +36,9 @@ class CommentsApi extends GetApi<CommentListResult> {
     }
 
     @Override
-    protected CommentListResult convert(HttpResponse response) throws Exception {
+    protected CommentsResult convert(HttpResponse response) throws Exception {
         CommentList list = XmlUtils.read(CommentList.class, response.getContentsAsString(), false);
-        return new CommentListResult(response.getStatus(), response.getHeaders(), list);
+        return new CommentsResult(response.getStatus(), response.getHeaders(), list);
     }
 
 }
