@@ -8,7 +8,6 @@ import com.chuross.common.library.http.HttpResponse;
 import com.chuross.common.library.util.XmlUtils;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.simpleframework.xml.core.Persister;
 import org.simpleframework.xml.transform.RegistryMatcher;
 
@@ -20,11 +19,11 @@ import java.util.Locale;
 
 class ContentInfoApi extends GetApi<ContentInfoResult> {
 
-    private static final DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.JAPAN);
+    private static final DateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.JAPAN);
 
-    private long contentId;
+    private Long contentId;
 
-    public ContentInfoApi(Context context, String authKey, long contentId) {
+    public ContentInfoApi(Context context, String authKey, Long contentId) {
         super(context, authKey);
         this.contentId = contentId;
     }
@@ -41,15 +40,15 @@ class ContentInfoApi extends GetApi<ContentInfoResult> {
     @Override
     protected void setParameters(List<NameValuePair> nameValuePairs) {
         super.setParameters(nameValuePairs);
-        nameValuePairs.add(new BasicNameValuePair("cont_id", String.valueOf(contentId)));
-        nameValuePairs.add(new BasicNameValuePair("dates", "1"));
-        nameValuePairs.add(new BasicNameValuePair("models", "0"));
+        addParameter(nameValuePairs, "cont_id", contentId);
+        addParameter(nameValuePairs, "dates", "1");
+        addParameter(nameValuePairs, "models", "0");
     }
 
     @Override
     protected ContentInfoResult convert(HttpResponse response) throws Exception {
         RegistryMatcher matcher = new RegistryMatcher();
-        matcher.bind(Date.class, new DateformatTransformer(dateformat));
+        matcher.bind(Date.class, new DateformatTransformer(FORMAT));
         ContentInfo info = XmlUtils.read(new Persister(matcher), ContentInfo.class, response.getContentsAsString(), false);
         return new ContentInfoResult(response.getStatus(), response.getHeaders(), info);
     }

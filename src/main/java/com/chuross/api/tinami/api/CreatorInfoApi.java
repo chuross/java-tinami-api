@@ -7,15 +7,14 @@ import com.chuross.common.library.http.HttpResponse;
 import com.chuross.common.library.util.XmlUtils;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
 class CreatorInfoApi extends GetApi<CreatorInfoResult> {
 
-    private long creatorId;
+    private Long creatorId;
 
-    public CreatorInfoApi(Context context, String authKey, long creatorId) {
+    public CreatorInfoApi(Context context, String authKey, Long creatorId) {
         super(context, authKey);
         this.creatorId = creatorId;
     }
@@ -32,7 +31,7 @@ class CreatorInfoApi extends GetApi<CreatorInfoResult> {
     @Override
     protected void setParameters(List<NameValuePair> nameValuePairs) {
         super.setParameters(nameValuePairs);
-        nameValuePairs.add(new BasicNameValuePair("prof_id", String.valueOf(creatorId)));
+        addParameter(nameValuePairs, "prof_id", creatorId);
     }
 
     @Override

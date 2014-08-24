@@ -72,7 +72,7 @@ public class TinamiApi extends AccountService<String, AuthenticationResult> {
         return new SearchApi(context, account.getAuthKey(), searchParameter).execute(executor, config, RETRY_COUNT);
     }
 
-    public Future<BookmarkContentsResult> getBookmarkContents(Executor executor, final int page, final int perpage, final boolean safe) {
+    public Future<BookmarkContentsResult> getBookmarkContents(Executor executor, final Integer page, final Integer perpage, final Boolean safe) {
         return executeWithAuthentication(executor, config, RETRY_COUNT, new Callable<Api<BookmarkContentsResult>>() {
             @Override
             public Api<BookmarkContentsResult> call() throws Exception {
@@ -81,7 +81,7 @@ public class TinamiApi extends AccountService<String, AuthenticationResult> {
         });
     }
 
-    public Future<BookmarkCreatorsResult> getBookmarkCreators(Executor executor, final int page, final int perpage) {
+    public Future<BookmarkCreatorsResult> getBookmarkCreators(Executor executor, final Integer page, final Integer perpage) {
         return executeWithAuthentication(executor, config, RETRY_COUNT, new Callable<Api<BookmarkCreatorsResult>>() {
             @Override
             public Api<BookmarkCreatorsResult> call() throws Exception {
@@ -90,7 +90,7 @@ public class TinamiApi extends AccountService<String, AuthenticationResult> {
         });
     }
 
-    public Future<BookmarkCreatorsAddResult> addBookmarkCreators(Executor executor, final long userId) {
+    public Future<BookmarkCreatorsAddResult> addBookmarkCreators(Executor executor, final Long userId) {
         return executeWithAuthentication(executor, config, RETRY_COUNT, new Callable<Api<BookmarkCreatorsAddResult>>() {
             @Override
             public Api<BookmarkCreatorsAddResult> call() throws Exception {
@@ -99,7 +99,7 @@ public class TinamiApi extends AccountService<String, AuthenticationResult> {
         });
     }
 
-    public Future<FriendRecommendResult> getFriendRecommend(Executor executor, final int page, final int perpage, final boolean safe) {
+    public Future<FriendRecommendResult> getFriendRecommend(Executor executor, final Integer page, final Integer perpage, final Boolean safe) {
         return executeWithAuthentication(executor, config, RETRY_COUNT, new Callable<Api<FriendRecommendResult>>() {
             @Override
             public Api<FriendRecommendResult> call() throws Exception {
@@ -108,7 +108,7 @@ public class TinamiApi extends AccountService<String, AuthenticationResult> {
         });
     }
 
-    public Future<WatchKeywordResult> getWatchKeyword(Executor executor, final int page, final int perpage, final boolean safe) {
+    public Future<WatchKeywordResult> getWatchKeyword(Executor executor, final Integer page, final Integer perpage, final Boolean safe) {
         return executeWithAuthentication(executor, config, RETRY_COUNT, new Callable<Api<WatchKeywordResult>>() {
             @Override
             public Api<WatchKeywordResult> call() throws Exception {
@@ -117,7 +117,7 @@ public class TinamiApi extends AccountService<String, AuthenticationResult> {
         });
     }
 
-    public Future<CollectionResult> getCollections(Executor executor, final int page, final int perpage, final boolean safe) {
+    public Future<CollectionResult> getCollections(Executor executor, final Integer page, final Integer perpage, final Boolean safe) {
         return executeWithAuthentication(executor, config, RETRY_COUNT, new Callable<Api<CollectionResult>>() {
             @Override
             public Api<CollectionResult> call() throws Exception {
@@ -126,7 +126,7 @@ public class TinamiApi extends AccountService<String, AuthenticationResult> {
         });
     }
 
-    public Future<CollectionAddResult> addCollection(Executor executor, final long contentId) {
+    public Future<CollectionAddResult> addCollection(Executor executor, final Long contentId) {
         return executeWithAuthentication(executor, config, RETRY_COUNT, new Callable<Api<CollectionAddResult>>() {
             @Override
             public Api<CollectionAddResult> call() throws Exception {
@@ -139,7 +139,7 @@ public class TinamiApi extends AccountService<String, AuthenticationResult> {
         return new RankingApi(context, contentType).execute(executor, config, RETRY_COUNT);
     }
 
-    public Future<ContentInfoResult> getContentInfo(Executor executor, final long contentId) {
+    public Future<ContentInfoResult> getContentInfo(Executor executor, final Long contentId) {
         return executeWithAuthentication(executor, config, RETRY_COUNT, new Callable<Api<ContentInfoResult>>() {
             @Override
             public Api<ContentInfoResult> call() throws Exception {
@@ -157,11 +157,11 @@ public class TinamiApi extends AccountService<String, AuthenticationResult> {
         });
     }
 
-    public Future<CommentsResult> getComments(Executor executor, long contentId) {
+    public Future<CommentsResult> getComments(Executor executor, Long contentId) {
         return new CommentsApi(context, contentId).execute(executor, config, RETRY_COUNT);
     }
 
-    public Future<CommentAddResult> addComment(Executor executor, final long contentId, final String comment) {
+    public Future<CommentAddResult> addComment(Executor executor, final Long contentId, final String comment) {
         return executeWithAuthentication(executor, config, RETRY_COUNT, new Callable<Api<CommentAddResult>>() {
             @Override
             public Api<CommentAddResult> call() throws Exception {
@@ -170,7 +170,7 @@ public class TinamiApi extends AccountService<String, AuthenticationResult> {
         });
     }
 
-    public Future<CommentRemoveResult> removeComment(Executor executor, final long commentId) {
+    public Future<CommentRemoveResult> removeComment(Executor executor, final Long commentId) {
         return executeWithAuthentication(executor, config, RETRY_COUNT, new Callable<Api<CommentRemoveResult>>() {
             @Override
             public Api<CommentRemoveResult> call() throws Exception {

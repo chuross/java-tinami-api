@@ -7,15 +7,14 @@ import com.chuross.common.library.http.HttpResponse;
 import com.chuross.common.library.util.XmlUtils;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
 class BookmarkCreatorsAddApi extends GetApi<BookmarkCreatorsAddResult> {
 
-    private long userId;
+    private Long userId;
 
-    public BookmarkCreatorsAddApi(Context context, String authKey, long userId) {
+    public BookmarkCreatorsAddApi(Context context, String authKey, Long userId) {
         super(context, authKey);
         this.userId = userId;
     }
@@ -32,7 +31,7 @@ class BookmarkCreatorsAddApi extends GetApi<BookmarkCreatorsAddResult> {
     @Override
     protected void setParameters(List<NameValuePair> nameValuePairs) {
         super.setParameters(nameValuePairs);
-        nameValuePairs.add(new BasicNameValuePair("prof_id", String.valueOf(userId)));
+        addParameter(nameValuePairs, "prof_id", userId);
     }
 
     @Override

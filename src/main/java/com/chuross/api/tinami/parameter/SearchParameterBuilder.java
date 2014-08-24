@@ -13,10 +13,10 @@ public class SearchParameterBuilder implements Cloneable, Serializable {
     private Expression expression;
     private Sort sort;
     private List<ContentType> contetntTypes;
-    private int page;
-    private int perpage;
-    private long creatorId;
-    private boolean safe;
+    private Integer page;
+    private Integer perpage;
+    private Long creatorId;
+    private Boolean safe;
 
     public String getAuthKey() {
         return authKey;
@@ -75,38 +75,38 @@ public class SearchParameterBuilder implements Cloneable, Serializable {
         return this;
     }
 
-    public int getPage() {
+    public Integer getPage() {
         return page;
     }
 
-    public SearchParameterBuilder setPage(int page) {
+    public SearchParameterBuilder setPage(Integer page) {
         this.page = page;
         return this;
     }
 
-    public int getPerpage() {
+    public Integer getPerpage() {
         return perpage;
     }
 
-    public SearchParameterBuilder setPerpage(int perpage) {
+    public SearchParameterBuilder setPerpage(Integer perpage) {
         this.perpage = perpage;
         return this;
     }
 
-    public long getCreatorId() {
+    public Long getCreatorId() {
         return creatorId;
     }
 
-    public SearchParameterBuilder setCreatorId(long creatorId) {
+    public SearchParameterBuilder setCreatorId(Long creatorId) {
         this.creatorId = creatorId;
         return this;
     }
 
-    public boolean isSafe() {
+    public Boolean isSafe() {
         return safe;
     }
 
-    public SearchParameterBuilder setSafe(boolean safe) {
+    public SearchParameterBuilder setSafe(Boolean safe) {
         this.safe =safe;
         return this;
     }
@@ -119,11 +119,11 @@ public class SearchParameterBuilder implements Cloneable, Serializable {
         Expression expression = builder.getExpression();
         Sort sort = builder.getSort();
         List<ContentType> contentTypes = builder.getContetntTypes();
-        int page = builder.getPage();
-        int perpage = builder.getPerpage();
-        long creatorId = builder.getCreatorId();
-        boolean safe = builder.isSafe();
-        return new SearchParameter(authKey, text, tag, expression, sort, contetntTypes, page, perpage, creatorId, safe);
+        Integer page = builder.getPage();
+        Integer perpage = builder.getPerpage();
+        Long creatorId = builder.getCreatorId();
+        Boolean safe = builder.isSafe();
+        return new SearchParameter(authKey, text, tag, expression, sort, contentTypes, page, perpage, creatorId, safe);
     }
 
     @Override

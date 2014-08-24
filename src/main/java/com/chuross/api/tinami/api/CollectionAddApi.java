@@ -7,15 +7,14 @@ import com.chuross.common.library.http.HttpResponse;
 import com.chuross.common.library.util.XmlUtils;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
 class CollectionAddApi extends GetApi<CollectionAddResult> {
 
-    private long contentId;
+    private Long contentId;
 
-    public CollectionAddApi(Context context, String authKey, long contentId) {
+    public CollectionAddApi(Context context, String authKey, Long contentId) {
         super(context, authKey);
         this.contentId = contentId;
     }
@@ -32,7 +31,7 @@ class CollectionAddApi extends GetApi<CollectionAddResult> {
     @Override
     protected void setParameters(List<NameValuePair> nameValuePairs) {
         super.setParameters(nameValuePairs);
-        nameValuePairs.add(new BasicNameValuePair("cont_id", String.valueOf(contentId)));
+        addParameter(nameValuePairs, "cont_id", contentId);
     }
 
     @Override

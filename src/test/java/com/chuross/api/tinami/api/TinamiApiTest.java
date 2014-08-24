@@ -143,9 +143,6 @@ public class TinamiApiTest extends HttpRequestTestCase {
         parameters.add(new BasicNameValuePair("api_key", "mock"));
         parameters.add(new BasicNameValuePair("auth_key", "piyo"));
         parameters.add(new BasicNameValuePair("text", "keyword"));
-        parameters.add(new BasicNameValuePair("safe", "0"));
-        parameters.add(new BasicNameValuePair("page", "1"));
-        parameters.add(new BasicNameValuePair("perpage", "1"));
         RequestPattern pattern = new RequestPattern("/content/search", parameters, null);
 
         addResponse(pattern, getResponse(200, "/testdata/contentlist/success_multi.xml"));

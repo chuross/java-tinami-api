@@ -8,7 +8,6 @@ import com.chuross.common.library.http.HttpResponse;
 import com.chuross.common.library.util.XmlUtils;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.simpleframework.xml.core.Persister;
 import org.simpleframework.xml.transform.RegistryMatcher;
 
@@ -21,9 +20,9 @@ import java.util.Locale;
 class CommentsApi extends GetApi<CommentsResult> {
 
     private static final DateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.JAPAN);
-    private long contentId;
+    private Long contentId;
 
-    public CommentsApi(Context context, long contentId) {
+    public CommentsApi(Context context, Long contentId) {
         super(context);
         this.contentId = contentId;
     }
@@ -40,7 +39,7 @@ class CommentsApi extends GetApi<CommentsResult> {
     @Override
     protected void setParameters(List<NameValuePair> nameValuePairs) {
         super.setParameters(nameValuePairs);
-        nameValuePairs.add(new BasicNameValuePair("cont_id", String.valueOf(contentId)));
+        addParameter(nameValuePairs, "cont_id", contentId);
     }
 
     @Override

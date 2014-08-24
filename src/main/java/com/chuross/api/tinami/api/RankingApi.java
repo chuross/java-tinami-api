@@ -8,7 +8,6 @@ import com.chuross.common.library.http.HttpResponse;
 import com.chuross.common.library.util.XmlUtils;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
@@ -33,7 +32,7 @@ class RankingApi extends GetApi<RankingResult> {
     @Override
     protected void setParameters(List<NameValuePair> nameValuePairs) {
         super.setParameters(nameValuePairs);
-        nameValuePairs.add(new BasicNameValuePair("category", String.valueOf(contentType.getCode())));
+        addParameterIfNotNull(nameValuePairs, "category", contentType != null ? contentType.getCode() : null);
     }
 
     @Override

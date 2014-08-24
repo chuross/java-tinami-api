@@ -12,7 +12,7 @@ import java.util.List;
 class BookmarkCreatorsApi extends AbstractPagingApi<BookmarkCreatorsResult> {
 
 
-    public BookmarkCreatorsApi(Context context, String authKey, int page, int perpage) {
+    public BookmarkCreatorsApi(Context context, String authKey, Integer page, Integer perpage) {
         super(context, authKey, page, perpage);
     }
 

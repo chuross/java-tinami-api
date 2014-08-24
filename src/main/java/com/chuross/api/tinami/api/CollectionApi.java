@@ -7,15 +7,14 @@ import com.chuross.common.library.http.HttpResponse;
 import com.chuross.common.library.util.XmlUtils;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
 class CollectionApi extends AbstractPagingApi<CollectionResult> {
 
-    private boolean safe;
+    private Boolean safe;
 
-    public CollectionApi(Context context, String authKey, int page, int perpage, boolean safe) {
+    public CollectionApi(Context context, String authKey, Integer page, Integer perpage, Boolean safe) {
         super(context, authKey, page, perpage);
         this.safe = safe;
     }
@@ -32,7 +31,11 @@ class CollectionApi extends AbstractPagingApi<CollectionResult> {
     @Override
     protected void setParameters(List<NameValuePair> nameValuePairs) {
         super.setParameters(nameValuePairs);
-        nameValuePairs.add(new BasicNameValuePair("safe", safe ? "1" : "0"));
+        addParameterIfNotNull(nameValuePairs, "safe", safe != null ? isSafe(safe) : null);
+    }
+
+    private String isSafe(Boolean safe) {
+        return safe ? "1" : "0";
     }
 
     @Override

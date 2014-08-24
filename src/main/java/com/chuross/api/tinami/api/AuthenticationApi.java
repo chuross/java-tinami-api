@@ -6,7 +6,6 @@ import com.chuross.api.tinami.result.AuthenticationResult;
 import com.chuross.common.library.http.HttpResponse;
 import com.chuross.common.library.util.XmlUtils;
 import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
@@ -29,8 +28,8 @@ class AuthenticationApi extends PostApi<AuthenticationResult> {
     @Override
     protected void setParameters(List<NameValuePair> nameValuePairs) {
         super.setParameters(nameValuePairs);
-        nameValuePairs.add(new BasicNameValuePair("email", email));
-        nameValuePairs.add(new BasicNameValuePair("password", password));
+        addParameter(nameValuePairs, "email", email);
+        addParameter(nameValuePairs, "password", password);
     }
 
     @Override

@@ -15,12 +15,12 @@ public class SearchParameter {
     private Expression expression;
     private Sort sort;
     private List<ContentType> contetntTypes;
-    private int page;
-    private int perpage;
-    private long creatorId;
-    private boolean safe = false;
+    private Integer page;
+    private Integer perpage;
+    private Long creatorId;
+    private Boolean safe = false;
 
-    SearchParameter(String authKey, String text, String tag, Expression expression, Sort sort, List<ContentType> contetntTypes, int page, int perpage, long creatorId, boolean safe) {
+    SearchParameter(String authKey, String text, String tag, Expression expression, Sort sort, List<ContentType> contetntTypes, Integer page, Integer perpage, Long creatorId, Boolean safe) {
         this.authKey = authKey;
         this.text = text;
         this.tag = tag;
@@ -93,27 +93,30 @@ public class SearchParameter {
     }
 
     private void setPageIfNotNull(List<NameValuePair> parameters) {
-        if(page < 0) {
+        if(page == null) {
             return;
         }
         parameters.add(new BasicNameValuePair("page", String.valueOf(page > 0 ? page : 1)));
     }
 
     private void setPerpageIfNotNull(List<NameValuePair> parameters) {
-        if(perpage < 0) {
+        if(perpage == null) {
             return;
         }
         parameters.add(new BasicNameValuePair("perpage", String.valueOf(perpage > 0 ? perpage : 1)));
     }
 
     private void setCreatorIdIfNotNull(List<NameValuePair> parameters) {
-        if(creatorId <= 0) {
+        if(creatorId == null) {
             return;
         }
         parameters.add(new BasicNameValuePair("prof_id", String.valueOf(creatorId)));
     }
 
     private void setSafeIfNotNull(List<NameValuePair> parameters) {
+        if(safe == null) {
+            return;
+        }
         parameters.add(new BasicNameValuePair("safe", safe ? "1" : "0"));
     }
 

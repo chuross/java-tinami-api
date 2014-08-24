@@ -7,16 +7,15 @@ import com.chuross.common.library.http.HttpResponse;
 import com.chuross.common.library.util.XmlUtils;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
 class CommentAddApi extends GetApi<CommentAddResult> {
 
-    private long contentId;
+    private Long contentId;
     private String comment;
 
-    public CommentAddApi(Context context, String authKey, long contentId, String comment) {
+    public CommentAddApi(Context context, String authKey, Long contentId, String comment) {
         super(context, authKey);
         this.contentId = contentId;
         this.comment = comment;
@@ -34,8 +33,8 @@ class CommentAddApi extends GetApi<CommentAddResult> {
     @Override
     protected void setParameters(List<NameValuePair> nameValuePairs) {
         super.setParameters(nameValuePairs);
-        nameValuePairs.add(new BasicNameValuePair("cont_id", String.valueOf(contentId)));
-        nameValuePairs.add(new BasicNameValuePair("comment", comment));
+        addParameter(nameValuePairs, "cont_id", contentId);
+        addParameter(nameValuePairs, "comment", comment);
     }
 
     @Override
